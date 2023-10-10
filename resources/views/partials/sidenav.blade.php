@@ -39,6 +39,21 @@
                         <div class="nav-link-icon"><i data-feather="check-circle"></i></div>
                         Complete Requests
                     </a>
+                    <!-- Sidenav Heading (Item)-->
+                    <div class="sidenav-menu-heading">Item</div>
+                    <!-- Sidenav (Pending Request)-->
+                    <a class="nav-link" href="/item">
+                        <div class="nav-link-icon"><i data-feather="package"></i></div>
+                        Item
+                    </a>
+                    <a class="nav-link" href="/category">
+                        <div class="nav-link-icon"><i data-feather="tag"></i></div>
+                        Category
+                    </a>
+                    <a class="nav-link" href="/unit">
+                        <div class="nav-link-icon"><i data-feather="folder"></i></div>
+                        Unit
+                    </a>
                     <!-- Sidenav Heading (Custom)-->
                     <div class="sidenav-menu-heading">Custom</div>
                     <!-- Sidenav Accordion (Pages)-->
