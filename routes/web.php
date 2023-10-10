@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\UnitController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,3 +25,20 @@ Route::get('login', function () {
 Route::get('forgot-password', function () {
     return view('pages.auth.forgot');
 });
+
+Route::resource('item', ItemController::class);
+Route::resource('category', CategoryController::class);
+Route::resource('unit', UnitController::class);
+// Route::get('item', function(){
+//     return view('pages.item.index');
+// });
+// Route::get('item/create', function(){
+//     return view('pages.item.create');
+// });
+// Route::get('item/1/edit', function(){
+//     return view('pages.unit.edit');
+// });
+// Route::get('item/1', function(){
+//     return view('pages.item.read');
+// });
+
