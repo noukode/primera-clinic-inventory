@@ -6,50 +6,56 @@
             <div class="row align-items-center justify-content-between">
                 <div class="col-auto mt-4">
                     <h1 class="page-header-title">
-                        <div class="page-header-icon"><i data-feather="folder"></i></div>
-                        Unit List
+                        <div class="page-header-icon"><i data-feather="user"></i></div>
+                        User List
                     </h1>
                 </div>
                 <div class="col-auto mt-4">
-                    <a href="/unit/create" class="btn btn-sm btn-info"><i data-feather="plus"></i> Add</a>
+                    <a href="/user/create" class="btn btn-sm btn-info"><i data-feather="plus"></i> Add</a>
                 </div>
             </div>
             <nav class="mt-4 rounded" aria-label="breadcrumb">
                 <ol class="breadcrumb px-3 py-2 rounded mb-0">
                     <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Unit</li>
+                    <li class="breadcrumb-item active">User</li>
                 </ol>
             </nav>
         </div>
     </div>
 </header>
-<!-- Main page content-->
 <div class="container-fluid px-4 mt-n10">
     <div class="card">
         <div class="card-body">
             <table id="datatablesSimple">
                 <thead>
                     <tr>
-                        <th>Unit</th>
-                        <th>Slug</th>
-                        <th>Action</th>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>Unit</th>
-                        <th>Slug</th>
-                        <th>Action</th>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Actions</th>
                     </tr>
                 </tfoot>
                 <tbody>
                     <tr>
-                        <td>Pcs</td>
-                        <td>pcs</td>
                         <td>
-                            <a class="btn btn-datatable btn-icon btn-info me-2" href="/item/1"><i data-feather="info"></i></a>
-                            <a class="btn btn-datatable btn-icon btn-success me-2" href="#"><i data-feather="edit"></i></a>
-                            <a class="btn btn-datatable btn-icon btn-danger" href="#"><i data-feather="trash-2"></i></a>
+                            <div class="d-flex align-items-center">
+                                <div class="avatar me-2"><img class="avatar-img img-fluid" src="assets/img/illustrations/profiles/profile-1.png" /></div>
+                                Tiger Nixon
+                            </div>
+                        </td>
+                        <td>tiger@email.com</td>
+                        <td>Administrator</td>
+                        <td>
+                            <a class="btn btn-datatable btn-icon btn-transparent-dark me-2" href="user-management-edit-user.html"><i data-feather="edit"></i></a>
+                            <a class="btn btn-datatable btn-icon btn-transparent-dark" href="#!"><i data-feather="trash-2"></i></a>
                         </td>
                     </tr>
                 </tbody>
@@ -57,7 +63,6 @@
         </div>
     </div>
 </div>
-
 @endsection
 
 @section('javascript')

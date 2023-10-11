@@ -54,6 +54,12 @@
                         <div class="nav-link-icon"><i data-feather="folder"></i></div>
                         Unit
                     </a>
+                    <!-- Sidenav Heading (User Management)-->
+                    <div class="sidenav-menu-heading">User Management</div>
+                    <a class="nav-link" href="/user">
+                        <div class="nav-link-icon"><i data-feather="user"></i></div>
+                        User
+                    </a>
                     <!-- Sidenav Heading (Custom)-->
                     <div class="sidenav-menu-heading">Custom</div>
                     <!-- Sidenav Accordion (Pages)-->
