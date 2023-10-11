@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\UnitController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,6 +30,7 @@ Route::get('forgot-password', function () {
 Route::resource('item', ItemController::class);
 Route::resource('category', CategoryController::class);
 Route::resource('unit', UnitController::class);
+Route::resource('user', UserController::class);
 // Route::get('item', function(){
 //     return view('pages.item.index');
 // });

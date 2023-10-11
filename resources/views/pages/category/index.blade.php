@@ -16,7 +16,7 @@
             </div>
             <nav class="mt-4 rounded" aria-label="breadcrumb">
                 <ol class="breadcrumb px-3 py-2 rounded mb-0">
-                    <li class="breadcrumb-item"><a href="dashboard-1.html">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
                     <li class="breadcrumb-item active">Category</li>
                 </ol>
             </nav>

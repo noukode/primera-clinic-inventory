@@ -6,7 +6,7 @@
             <div class="row align-items-center justify-content-between">
                 <div class="col-auto mt-4">
                     <h1 class="page-header-title">
-                        <div class="page-header-icon"><i data-feather="tag"></i></div>
+                        <div class="page-header-icon"><i data-feather="folder"></i></div>
                         Edit Unit
                     </h1>
                 </div>
