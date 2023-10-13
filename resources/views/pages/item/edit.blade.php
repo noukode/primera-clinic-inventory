@@ -22,57 +22,79 @@
     </div>
 </header>
 <!-- Main page content-->
-<div class="container-fluid px-4 mt-n10">
+<div class="container px-4 mt-n10">
     <div class="row">
-        <div class="col-12 col-md-4">
+        <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="card-title">
-                        Item Image
-                    </div>
-                    <img src="/assets/img/illustrations/profiles/profile-1.png" alt="" class="img-fluid">
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <div class="card-title">
-                        Item Details
-                    </div>
-                    <form action="" method="POST">
+                    <form action="/item/{{ $item->id }}" method="POST">
+                        @csrf
+                        @method('PUT')
                         <div class="row">
                             <div class="col-12">
                                 <div class="mb-3">
+                                    <label for="kode_item" class="form-label">Kode Item</label>
+                                    <input type="text" class="form-control" id="kode_item" name="kode_item" placeholder="Kode Item" value="{{ $item->kode_item }}" disabled>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
                                     <label for="name" class="form-label">Item Name</label>
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Item Name">
+                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="Item Name" value="{{ $item->name }}">
+                                    <div class="invalid-feedback">
+                                        @error('name')
+                                            {{ $message }}
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description">{{ $item->description }}</textarea>
+                                    <div class="invalid-feedback">
+                                        @error('description')
+                                            {{ $message }}
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label for="category" class="form-label">Item Category</label>
-                                    <select class="form-select" aria-label="Item Category" id="category" name="category">
-                                        <option value="0" selected>Open this select menu</option>
-                                        <option value="1">Dispose</option>
-                                        <option value="2">Alat</option>
-                                        <option value="3">Obat</option>
+                                    <label for="category_id" class="form-label">Item Category</label>
+                                    <select class="form-select @error('category_id') is-invalid @enderror" aria-label="Item Category" id="category_id" name="category_id">
+                                        <option disabled>Open this select menu</option>
+                                        @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}" {{ $item->category_id === $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                        @endforeach
                                     </select>
+                                    <div class="invalid-feedback">
+                                        @error('category_id')
+                                            {{ $message }}
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="mb-3">
-                                    <label for="unit" class="form-label">Unit</label>
-                                    <select class="form-select" aria-label="Unit" id="unit" name="unit">
-                                        <option value="0" selected>Open this select menu</option>
-                                        <option value="1">pcs</option>
-                                        <option value="2">pack</option>
+                                    <label for="unit_id" class="form-label">Unit</label>
+                                    <select class="form-select @error('unit_id') is-invalid @enderror" aria-label="Unit" id="unit_id" name="unit_id">
+                                        <option disabled>Open this select menu</option>
+                                        @foreach ($units as $unit)
+                                        <option value="{{ $unit->id }}" {{ $item->unit_id === $unit->id ? 'selected' : '' }}>{{ $unit->name }}</option>
+                                        @endforeach
                                     </select>
+                                    <div class="invalid-feedback">
+                                        @error('unit_id')
+                                            {{ $message }}
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="mb-3">
                                     <label for="stock" class="form-label">Stock</label>
-                                    <input type="number" class="form-control" id="stock" name="stock" disabled value="80">
+                                    <input type="number" class="form-control" id="stock" name="stock" disabled value="{{ $item->stock_sum_quantity }}">
                                 </div>
                             </div>
                             <div class="col-12">

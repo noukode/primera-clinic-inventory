@@ -29,9 +29,10 @@
 <div class="container-fluid px-4 mt-n10">
     <div class="card">
         <div class="card-body">
-            <table id="datatablesSimple">
+            <table class="table table-sm table-striped" id="item-table">
                 <thead>
                     <tr>
+                        <th>Kode Item</th>
                         <th>Item</th>
                         <th>Category</th>
                         <th>Unit</th>
@@ -41,6 +42,7 @@
                 </thead>
                 <tfoot>
                     <tr>
+                        <th>Kode Item</th>
                         <th>Item</th>
                         <th>Category</th>
                         <th>Unit</th>
@@ -49,17 +51,20 @@
                     </tr>
                 </tfoot>
                 <tbody>
-                    <tr>
-                        <td>Tabung EDTA</td>
-                        <td>Dispose</td>
-                        <td>pcs</td>
-                        <td>0</td>
-                        <td>
-                            <a class="btn btn-datatable btn-icon btn-info me-2" href="/item/1"><i data-feather="info"></i></a>
-                            <a class="btn btn-datatable btn-icon btn-success me-2" href="#"><i data-feather="edit"></i></a>
-                            <a class="btn btn-datatable btn-icon btn-danger" href="#"><i data-feather="trash-2"></i></a>
-                        </td>
-                    </tr>
+                    @foreach ($items as $item)
+                        <tr>
+                            <td>{{ $item->kode_item }}</td>
+                            <td>{{ $item->name }}</td>
+                            <td>{{ $item->category->name }}</td>
+                            <td>{{ $item->unit->name }}</td>
+                            <td>{{ $item->stock_sum_quantity }}</td>
+                            <td>
+                                <a class="btn btn-sm btn-info me-2" href="/item/{{ $item->id }}"><i data-feather="info"></i></a>
+                                <a class="btn btn-sm btn-success me-2" href="/item/{{ $item->id }}/edit"><i data-feather="edit"></i></a>
+                                <a class="btn btn-sm btn-danger btn-delete" data-id="{{ $item->id }}" href="#"><i data-feather="trash-2"></i></a>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -70,14 +75,28 @@
 
 @section('javascript')
 <script>
-    window.addEventListener('DOMContentLoaded', event => {
-        // Simple-DataTables
-        // https://github.com/fiduswriter/Simple-DataTables/wiki
+    let itemTable = document.getElementById('item-table');
 
-        const datatablesSimple = document.getElementById('datatablesSimple');
-        if (datatablesSimple) {
-            new simpleDatatables.DataTable(datatablesSimple);
-        }
-    });
+    // itemTable.addEventListener('click', function(e){
+    //     console.log(e.target.parentElement);
+    //     if(e.target.parentElement){}
+    // })
+
+    let btnDelete = document.querySelectorAll('.btn-delete');
+
+    btnDelete.forEach(el => {
+        el.addEventListener('click', function(e){
+            el.getAttribute('data-id');
+            Helper.confirmAlert('Hapus Data', 'warning', 'Ya').then(result => {
+                if(result.isConfirmed){
+                    Helper.fetchDelete(`/item/${el.getAttribute('data-id')}`)
+                        .then(response => response.json())
+                        .then(response => {
+                            Helper.simpleNotification(response.message, '', response.status).then(res => response.error === 0 ? Helper.refresh() : '');
+                        })
+                }
+            });
+        })
+    })
 </script>
 @endsection
