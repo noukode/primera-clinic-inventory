@@ -7,7 +7,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>Dashboard - Inventory Management System</title>
+        <title>{{ $title ?? 'Dashboard' }} - Inventory Management System</title>
         <link href="/css/styles.css" rel="stylesheet" />
         <link rel="icon" type="image/x-icon" href="/assets/img/favicon.png" />
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
