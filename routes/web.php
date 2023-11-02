@@ -28,8 +28,8 @@ Route::get('forgot-password', function () {
 });
 
 Route::resource('item', ItemController::class);
-Route::resource('category', CategoryController::class);
-Route::resource('unit', UnitController::class);
+Route::resource('category', CategoryController::class)->except('show');
+Route::resource('unit', UnitController::class)->except('show');
 Route::resource('user', UserController::class);
 // Route::get('item', function(){
 //     return view('pages.item.index');
