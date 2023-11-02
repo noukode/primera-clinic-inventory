@@ -13,12 +13,13 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
+        $title = 'Category List'
         $categories = new Category();
         if($request->search){
             $categories = $categories->where('name', 'LIKE', '%'. $request->search .'%');
         }
         $categories = $categories->paginate(15);
-        return view('pages.category.index', compact('categories'));
+        return view('pages.category.index', compact('title', 'categories'));
     }
 
     /**
@@ -26,7 +27,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('pages.category.create');
+        $title = 'Create Category';
+        return view('pages.category.create', compact('title'));
     }
 
     /**
@@ -63,7 +65,8 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('pages.category.edit', compact('category'));
+        $title = 'Edit Category';
+        return view('pages.category.edit', compact('title', 'category'));
     }
 
     /**
