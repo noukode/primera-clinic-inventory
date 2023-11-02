@@ -53,6 +53,7 @@
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->role->name }}</td>
                             <td>
+                                <a class="btn btn-datatable btn-icon btn-success" href="{{ route('user.show', $user->id) }}"><i data-feather="info"></i></a>
                                 <a class="btn btn-datatable btn-icon btn-info" href="{{ route('user.edit', $user->id) }}"><i data-feather="edit"></i></a>
                                 <a class="btn btn-datatable btn-icon btn-danger btn-delete" data-id="{{ $user->id }}"><i data-feather="trash-2"></i></a>
                             </td>
