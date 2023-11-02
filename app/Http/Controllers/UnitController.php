@@ -13,12 +13,13 @@ class UnitController extends Controller
      */
     public function index(Request $request)
     {
+        $title = 'Unit List';
         $units = new Unit();
         if($request->search){
             $units = $units->where('name', 'LIKE', '%'. $request->search .'%');
         }
         $units = $units->paginate(15);
-        return view('pages.unit.index', compact('units'));
+        return view('pages.unit.index', compact('title', 'units'));
     }
 
     /**
@@ -26,7 +27,8 @@ class UnitController extends Controller
      */
     public function create()
     {
-        return view('pages.unit.create');
+        $title = "Create Unit";
+        return view('pages.unit.create', compact('title'));
     }
 
     /**
@@ -63,7 +65,8 @@ class UnitController extends Controller
      */
     public function edit(Unit $unit)
     {
-        return view('pages.unit.edit', compact('unit'));
+        $title = 'Edit Unit';
+        return view('pages.unit.edit', compact('title', 'unit'));
     }
 
     /**
