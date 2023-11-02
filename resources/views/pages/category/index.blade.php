@@ -27,7 +27,10 @@
 <div class="container-fluid px-4 mt-n10">
     <div class="card">
         <div class="card-body">
-            <table id="datatablesSimple">
+            @if(session('success'))
+                <div class="alert alert-{{ session('success')['status'] }}">{{ session('success')['message'] }}</div>
+            @endif
+            <table class="table table-sm table-striped">
                 <thead>
                     <tr>
                         <th>Category</th>
@@ -43,17 +46,19 @@
                     </tr>
                 </tfoot>
                 <tbody>
-                    <tr>
-                        <td>Dispose</td>
-                        <td>dispose</td>
-                        <td>
-                            <a class="btn btn-datatable btn-icon btn-info me-2" href="/item/1"><i data-feather="info"></i></a>
-                            <a class="btn btn-datatable btn-icon btn-success me-2" href="#"><i data-feather="edit"></i></a>
-                            <a class="btn btn-datatable btn-icon btn-danger" href="#"><i data-feather="trash-2"></i></a>
-                        </td>
-                    </tr>
+                    @foreach ($categories as $category)
+                        <tr>
+                            <td>{{ $category->name }}</td>
+                            <td></td>
+                            <td>
+                                <a class="btn btn-datatable btn-icon btn-success me-2" href="{{ route('category.edit', $category->id) }}"><i data-feather="edit"></i></a>
+                                <a class="btn btn-datatable btn-icon btn-danger btn-delete" data-id="{{ $category->id }}" href="#"><i data-feather="trash-2"></i></a>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
+            {{ $categories->onEachSide(2)->links() }}
         </div>
     </div>
 </div>
@@ -62,14 +67,22 @@
 
 @section('javascript')
 <script>
-    window.addEventListener('DOMContentLoaded', event => {
-        // Simple-DataTables
-        // https://github.com/fiduswriter/Simple-DataTables/wiki
+    const btnDelete = document.querySelectorAll('.btn-delete');
+    const url = '/category/';
 
-        const datatablesSimple = document.getElementById('datatablesSimple');
-        if (datatablesSimple) {
-            new simpleDatatables.DataTable(datatablesSimple);
-        }
+    btnDelete.forEach(el => {
+        el.addEventListener('click', function(e){
+            el.getAttribute('data-id');
+            Helper.confirmAlert('Hapus Data', 'warning', 'Ya').then(result => {
+                if(result.isConfirmed){
+                    Helper.fetchDelete(`${url}${el.getAttribute('data-id')}`)
+                        .then(response => response.json())
+                        .then(response => {
+                            Helper.simpleNotification(response.message, '', response.status).then(res => response.error === 0 ? Helper.refresh() : '');
+                        })
+                }
+            });
+        })
     });
 </script>
 @endsection

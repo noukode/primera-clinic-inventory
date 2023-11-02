@@ -37,21 +37,34 @@
         <div class="col-12 col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <div class="card-title">
-                        Category Details
-                    </div>
-                    <form action="" method="POST">
+                    <form action="{{ route('category.update', $category->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
                         <div class="row">
                             <div class="col-12">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Category Name</label>
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Category Name">
+                                    <input type="text" class="form-control @error('name')
+                                        is-invalid
+                                    @enderror" id="name" name="name" value="{{ old('name', $category->name) }}" placeholder="Category Name">
+                                    @error('name')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="mb-3">
                                     <label for="slug" class="form-label">Slug</label>
-                                    <input type="text" class="form-control" id="slug" name="slug" placeholder="Slug" disabled>
+                                    <input type="text" class="form-control @error('slug')
+                                        is-invalid
+                                    @enderror" id="slug" name="slug" value="{{ old('slug', $category->slug) }}" placeholder="Slug" readonly>
+                                    @error('slug')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-12">
@@ -67,4 +80,13 @@
 </div>
 
 @endsection
+@section('javascript')
+    <script>
+        const nameInput = document.getElementById('name');
 
+        nameInput.addEventListener('change', function(e){
+            const slugInput = document.getElementById('slug');
+            slugInput.value = nameInput.value.toLowerCase().trim().split(/\s+/).join('-');
+        });
+    </script>
+@endsection
