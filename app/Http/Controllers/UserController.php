@@ -14,6 +14,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        $title = 'User List';
         $users = User::with('role');
 
         if($request->search){
@@ -28,7 +29,7 @@ class UserController extends Controller
 
         $users = $users->paginate(15);
 
-        return view('pages.user.index', compact('users'));
+        return view('pages.user.index', compact('title', 'users'));
     }
 
     /**
@@ -36,8 +37,9 @@ class UserController extends Controller
      */
     public function create()
     {
+        $title = 'Create User';
         $roles = UserRole::get();
-        return view('pages.user.create', compact('roles'));
+        return view('pages.user.create', compact('title', 'roles'));
     }
 
     /**
@@ -66,6 +68,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        $title = 'User Detail';
         $roles = UserRole::get();
         return view('pages.user.show', compact('user', 'roles'));
     }
@@ -75,8 +78,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $title = 'Edit User';
         $roles = UserRole::get();
-        return view('pages.user.edit', compact('user', 'roles'));
+        return view('pages.user.edit', compact('title', 'user', 'roles'));
     }
 
     /**
