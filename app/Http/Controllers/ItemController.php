@@ -15,7 +15,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::with('category', 'unit')->withSum('stock', 'quantity')->get();
+        $items = Item::with('category', 'unit')->withSum('stock', 'quantity')->paginate(1);
         return view('pages.item.index', compact('items'));
     }
 
@@ -58,9 +58,9 @@ class ItemController extends Controller
             'unit_id' => $validated['unit_id'],
         ]);
 
-        return redirect('/item')->with('response', [
+        return redirect('/item')->withSuccess([
             'status' => 'success',
-            'message' => 'Berhasil melakukan perubahan data'
+            'message' => 'Berhasil tambah data'
         ]);
     }
 
@@ -104,9 +104,9 @@ class ItemController extends Controller
             'unit_id' => $validated['unit_id'],
         ]);
 
-        return redirect('/item')->with('response', [
+        return redirect('/item')->withSuccess([
             'status' => 'success',
-            'message' => 'Berhasil melakukan perubahan data'
+            'message' => 'Berhasil update data'
         ]);
     }
 
