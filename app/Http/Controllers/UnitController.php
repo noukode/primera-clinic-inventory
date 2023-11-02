@@ -4,15 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use Throwable;
 
 class UnitController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('pages.unit.index');
+        $units = new Unit();
+        if($request->search){
+            $units = $units->where('name', 'LIKE', '%'. $request->search .'%');
+        }
+        $units = $units->paginate(15);
+        return view('pages.unit.index', compact('units'));
     }
 
     /**
@@ -28,7 +34,20 @@ class UnitController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required',
+            // 'slug' => 'required|unique:unit,slug'
+        ]);
+
+        Unit::create([
+            'name' => $validated['name'],
+            // 'slug' => $validated['slug'],
+        ]);
+
+        return redirect()->to('unit')->withSuccess([
+            'status' => 'success',
+            'message' => 'Tambah data berhasil'
+        ]);
     }
 
     /**
@@ -44,7 +63,7 @@ class UnitController extends Controller
      */
     public function edit(Unit $unit)
     {
-        return view('pages.unit.edit');
+        return view('pages.unit.edit', compact('unit'));
     }
 
     /**
@@ -52,7 +71,19 @@ class UnitController extends Controller
      */
     public function update(Request $request, Unit $unit)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required',
+            // 'slug' => 'required|unique:unit,slug,' . $category->id
+        ]);
+
+        $unit->name = $validated['name'];
+        // $unit->slug = $validated['slug'];
+        $unit->save();
+
+        return redirect()->to('unit')->withSuccess([
+            'status' => 'success',
+            'message' => 'Update data berhasil'
+        ]);
     }
 
     /**
@@ -60,6 +91,20 @@ class UnitController extends Controller
      */
     public function destroy(Unit $unit)
     {
-        //
+        try{
+            $unit->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'error' => 0,
+                'message' => 'Berhasil hapus data',
+            ]);
+        }catch(Throwable $e){
+            return response()->json([
+                'status' => 'error',
+                'error' => 1,
+                'message' => 'Gagal hapus data'
+            ], 400);
+        }
     }
 }
