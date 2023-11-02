@@ -29,6 +29,9 @@
 <div class="container-fluid px-4 mt-n10">
     <div class="card">
         <div class="card-body">
+            @if(session('success'))
+                <div class="alert alert-{{ session('success')['status'] }}">{{ session('success')['message'] }}</div>
+            @endif
             <table class="table table-sm table-striped" id="item-table">
                 <thead>
                     <tr>
@@ -67,6 +70,7 @@
                     @endforeach
                 </tbody>
             </table>
+            {{ $items->onEachSide(2)->links() }}
         </div>
     </div>
 </div>
@@ -82,14 +86,15 @@
     //     if(e.target.parentElement){}
     // })
 
-    let btnDelete = document.querySelectorAll('.btn-delete');
+    const btnDelete = document.querySelectorAll('.btn-delete');
+    const url = '/item/';
 
     btnDelete.forEach(el => {
         el.addEventListener('click', function(e){
             el.getAttribute('data-id');
             Helper.confirmAlert('Hapus Data', 'warning', 'Ya').then(result => {
                 if(result.isConfirmed){
-                    Helper.fetchDelete(`/item/${el.getAttribute('data-id')}`)
+                    Helper.fetchDelete(`${url}${el.getAttribute('data-id')}`)
                         .then(response => response.json())
                         .then(response => {
                             Helper.simpleNotification(response.message, '', response.status).then(res => response.error === 0 ? Helper.refresh() : '');
@@ -97,6 +102,6 @@
                 }
             });
         })
-    })
+    });
 </script>
 @endsection

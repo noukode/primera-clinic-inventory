@@ -15,8 +15,9 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::with('category', 'unit')->withSum('stock', 'quantity')->get();
-        return view('pages.item.index', compact('items'));
+        $title = 'Item List';
+        $items = Item::with('category', 'unit')->withSum('stock', 'quantity')->paginate(1);
+        return view('pages.item.index', compact('title', 'items'));
     }
 
     /**
@@ -24,10 +25,11 @@ class ItemController extends Controller
      */
     public function create()
     {
+        $title = 'Create Item';
         $categories = Category::get();
         $units = Unit::get();
 
-        return view('pages.item.create', compact('categories', 'units'));
+        return view('pages.item.create', compact('title', 'categories', 'units'));
     }
 
     /**
@@ -58,9 +60,9 @@ class ItemController extends Controller
             'unit_id' => $validated['unit_id'],
         ]);
 
-        return redirect('/item')->with('response', [
+        return redirect('/item')->withSuccess([
             'status' => 'success',
-            'message' => 'Berhasil melakukan perubahan data'
+            'message' => 'Berhasil tambah data'
         ]);
     }
 
@@ -78,11 +80,12 @@ class ItemController extends Controller
      */
     public function edit(Item $item)
     {
+        $title = 'Edit Item';
         $item = $item->with('category', 'unit')->withSum('stock', 'quantity')->first();
         $categories = Category::get();
         $units = Unit::get();
 
-        return view('pages.item.edit', compact('item', 'categories', 'units'));
+        return view('pages.item.edit', compact('title', 'item', 'categories', 'units'));
     }
 
     /**
@@ -104,9 +107,9 @@ class ItemController extends Controller
             'unit_id' => $validated['unit_id'],
         ]);
 
-        return redirect('/item')->with('response', [
+        return redirect('/item')->withSuccess([
             'status' => 'success',
-            'message' => 'Berhasil melakukan perubahan data'
+            'message' => 'Berhasil update data'
         ]);
     }
 

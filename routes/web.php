@@ -18,7 +18,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('pages.dashboard.dashboard');
+    $title = 'Dashboard';
+    return view('pages.dashboard.dashboard', compact('title'));
 });
 Route::get('login', function () {
     return view('pages.auth.login');
@@ -28,8 +29,8 @@ Route::get('forgot-password', function () {
 });
 
 Route::resource('item', ItemController::class);
-Route::resource('category', CategoryController::class);
-Route::resource('unit', UnitController::class);
+Route::resource('category', CategoryController::class)->except('show');
+Route::resource('unit', UnitController::class)->except('show');
 Route::resource('user', UserController::class);
 // Route::get('item', function(){
 //     return view('pages.item.index');

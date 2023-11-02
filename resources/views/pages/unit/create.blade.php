@@ -24,34 +24,36 @@
 <!-- Main page content-->
 <div class="container-fluid px-4 mt-n10">
     <div class="row justify-content-center">
-        {{-- <div class="col-12 col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <div class="card-title">
-                        Item Image
-                    </div>
-                    <img src="/assets/img/illustrations/profiles/profile-1.png" alt="" class="img-fluid">
-                </div>
-            </div>
-        </div> --}}
         <div class="col-12 col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <div class="card-title">
-                        Unit Details
-                    </div>
-                    <form action="" method="POST">
+                    <form action="{{ route('unit.store') }}" method="POST">
+                        @csrf
                         <div class="row">
                             <div class="col-12">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Unit Name</label>
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Unit Name">
+                                    <input type="text" class="form-control @error('name')
+                                        is-invalid
+                                    @enderror" id="name" name="name" value="{{ old('name') }}" placeholder="Unit Name">
+                                    @error('name')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="mb-3">
                                     <label for="slug" class="form-label">Slug</label>
-                                    <input type="text" class="form-control" id="slug" name="slug" placeholder="Slug" disabled>
+                                    <input type="text" class="form-control @error('slug')
+                                        is-invalid
+                                    @enderror" id="slug" name="slug" value="{{ old('slug') }}" placeholder="Slug" readonly>
+                                    @error('slug')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-12">
@@ -66,5 +68,15 @@
     </div>
 </div>
 
+@endsection
+@section('javascript')
+    <script>
+        const nameInput = document.getElementById('name');
+
+        nameInput.addEventListener('change', function(e){
+            const slugInput = document.getElementById('slug');
+            slugInput.value = nameInput.value.toLowerCase().trim().split(/\s+/).join('-');
+        });
+    </script>
 @endsection
 
