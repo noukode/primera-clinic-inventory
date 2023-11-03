@@ -24,11 +24,18 @@
                                     <div class="card-header justify-content-center"><h3 class="fw-light my-4">Login</h3></div>
                                     <div class="card-body">
                                         <!-- Login form-->
-                                        <form>
+                                        <form action="/authenticate" method="POST">
                                             <!-- Form Group (email address)-->
+                                            @error('email')
+                                                <div class="alert alert-danger">{{ $message }}</div>
+                                            @enderror
+                                            @if(session('success'))
+                                                <div class="alert alert-{{ session('success')['status'] }}">{{ session('success')['message'] }}</div>
+                                            @endif
+                                            @csrf
                                             <div class="mb-3">
                                                 <label class="small mb-1" for="inputEmailAddress">Email</label>
-                                                <input class="form-control" id="inputEmailAddress" type="email" name="email" placeholder="Enter email address" />
+                                                <input class="form-control" id="inputEmailAddress" type="email" name="email" value="{{ old('email') }}" placeholder="Enter email address" />
                                             </div>
                                             <!-- Form Group (password)-->
                                             <div class="mb-3">
@@ -38,7 +45,7 @@
                                             <!-- Form Group (login box)-->
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                                 <a class="small" href="/forgot-password">Forgot Password?</a>
-                                                <a class="btn btn-primary" href="/">Login</a>
+                                                <button type="submit" class="btn btn-primary">Login</button>
                                             </div>
                                         </form>
                                     </div>

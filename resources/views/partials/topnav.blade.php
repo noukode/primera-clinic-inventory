@@ -18,16 +18,16 @@
                     <h6 class="dropdown-header d-flex align-items-center">
                         <img class="dropdown-user-img" src="/assets/img/illustrations/profiles/profile-1.png" />
                         <div class="dropdown-user-details">
-                            <div class="dropdown-user-details-name">Valerie Luna</div>
-                            <div class="dropdown-user-details-email">vluna@aol.com</div>
+                            <div class="dropdown-user-details-name">{{ auth()->user()->name }}</div>
+                            <div class="dropdown-user-details-email">{{ auth()->user()->email }}</div>
                         </div>
                     </h6>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#!">
-                        <div class="dropdown-item-icon"><i data-feather="settings"></i></div>
-                        Account
+                    <a class="dropdown-item" href="{{ route('change_password') }}">
+                        <div class="dropdown-item-icon"><i data-feather="key"></i></div>
+                        Change Password
                     </a>
-                    <a class="dropdown-item" href="#!">
+                    <a class="dropdown-item" href="{{ route('logout') }}">
                         <div class="dropdown-item-icon"><i data-feather="log-out"></i></div>
                         Logout
                     </a>

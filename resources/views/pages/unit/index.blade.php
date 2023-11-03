@@ -27,6 +27,9 @@
 <div class="container-fluid px-4 mt-n10">
     <div class="card">
         <div class="card-body">
+            @if(session('success'))
+                <div class="alert alert-{{ session('success')['status'] }}">{{ session('success')['message'] }}</div>
+            @endif
             <table class="table table-sm table-striped">
                 <thead>
                     <tr>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\UnitController;
@@ -17,26 +18,35 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    $title = 'Dashboard';
-    return view('pages.dashboard.dashboard', compact('title'));
-});
-Route::get('login', function () {
-    return view('pages.auth.login');
-});
-Route::get('forgot-password', function () {
-    return view('pages.auth.forgot');
+Route::middleware('guest')->group(function(){
+    Route::get('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
+    Route::get('forgot-password', function () {
+        return view('pages.auth.forgot');
+    });
 });
 
-Route::resource('item', ItemController::class);
-Route::resource('category', CategoryController::class)->except('show');
-Route::resource('unit', UnitController::class)->except('show');
-Route::resource('user', UserController::class);
+Route::middleware('auth')->group(function(){
+    Route::get('/', function () {
+        $title = 'Dashboard';
+        return view('pages.dashboard.dashboard', compact('title'));
+    });
+    Route::resource('item', ItemController::class);
+    Route::resource('category', CategoryController::class)->except('show');
+    Route::resource('unit', UnitController::class)->except('show');
+    Route::resource('user', UserController::class);
+
+    Route::get('/change-password', [AuthController::class, 'change_password'])->name('change_password');
+    Route::post('/change-password', [AuthController::class, 'do_change_password'])->name('do_change_password');
+
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+});
+
 // Route::get('item', function(){
-//     return view('pages.item.index');
-// });
+    //     return view('pages.item.index');
+    // });
 // Route::get('item/create', function(){
-//     return view('pages.item.create');
+    //     return view('pages.item.create');
 // });
 // Route::get('item/1/edit', function(){
 //     return view('pages.unit.edit');
