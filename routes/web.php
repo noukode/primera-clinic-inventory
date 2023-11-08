@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,7 @@ Route::middleware('auth')->group(function(){
         $title = 'Dashboard';
         return view('pages.dashboard.dashboard', compact('title'));
     });
+    Route::resource('purchase-order', PurchaseOrderController::class);
     Route::resource('item', ItemController::class);
     Route::resource('category', CategoryController::class)->except('show');
     Route::resource('unit', UnitController::class)->except('show');
