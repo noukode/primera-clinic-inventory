@@ -13,7 +13,7 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $title = 'Category List'
+        $title = 'Category List';
         $categories = new Category();
         if($request->search){
             $categories = $categories->where('name', 'LIKE', '%'. $request->search .'%');
