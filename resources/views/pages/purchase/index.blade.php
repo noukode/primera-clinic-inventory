@@ -11,7 +11,7 @@
                     </h1>
                 </div>
                 <div class="col-auto mt-4">
-                    <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#create-purchase-order-modal"><i data-feather="plus"></i> Add</button>
+                    <a href="{{ route('purchase-order.create') }}" class="btn btn-sm btn-info"><i data-feather="plus"></i> Add</a>
                     {{-- <a href="#" class="btn btn-sm btn-success"><i data-feather="log-out"></i> Export</a>
                     <a href="#" class="btn btn-sm btn-warning"><i data-feather="log-in"></i> Import</a> --}}
                 </div>
@@ -71,29 +71,6 @@
         </div>
     </div>
 </div>
-<!-- Modal -->
-<div class="modal fade" id="create-purchase-order-modal" tabindex="-1" aria-labelledby="create-purchase-order-modalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form action="">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="create-purchase-order-modalLabel">Create Purchase Order</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="purchase_no" class="form-label">Purchase Order No</label>
-                        <input type="text" class="form-control" id="purchase_no" name="purchase_no">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-sm btn-primary">Create</button>
-                </div>
-            </form>
-        </div>
-    </div>
-  </div>
 @endsection
 
 @section('javascript')

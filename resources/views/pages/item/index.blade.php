@@ -12,8 +12,8 @@
                 </div>
                 <div class="col-auto mt-4">
                     <a href="/item/create" class="btn btn-sm btn-info"><i data-feather="plus"></i> Add</a>
-                    <a href="#" class="btn btn-sm btn-success"><i data-feather="log-out"></i> Export</a>
-                    <a href="#" class="btn btn-sm btn-warning"><i data-feather="log-in"></i> Import</a>
+                    {{-- <a href="#" class="btn btn-sm btn-success"><i data-feather="log-out"></i> Export</a>
+                    <a href="#" class="btn btn-sm btn-warning"><i data-feather="log-in"></i> Import</a> --}}
                 </div>
             </div>
             <nav class="mt-4 rounded" aria-label="breadcrumb">

@@ -34,6 +34,8 @@ Route::middleware('auth')->group(function(){
     });
     Route::resource('purchase-order', PurchaseOrderController::class);
     Route::resource('item', ItemController::class);
+    Route::post('item/get/{id}', [ItemController::class, 'get'])->name('item.get');
+    Route::post('item/all', [ItemController::class, 'all'])->name('item.all');
     Route::resource('category', CategoryController::class)->except('show');
     Route::resource('unit', UnitController::class)->except('show');
     Route::resource('user', UserController::class);

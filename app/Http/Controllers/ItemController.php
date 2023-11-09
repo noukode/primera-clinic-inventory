@@ -16,7 +16,7 @@ class ItemController extends Controller
     public function index()
     {
         $title = 'Item List';
-        $items = Item::with('category', 'unit')->withSum('stock', 'quantity')->paginate(1);
+        $items = Item::with('category', 'unit')->withSum('stock', 'quantity')->paginate(15);
         return view('pages.item.index', compact('title', 'items'));
     }
 
@@ -133,5 +133,38 @@ class ItemController extends Controller
                 'message' => 'Gagal hapus data'
             ], 400);
         }
+    }
+
+    public function get($id)
+    {
+        $item = Item::with('unit', 'category')->where('id', $id)->first();
+        if($item){
+            return response()->json([
+                'status' => 'success',
+                'error' => 0,
+                'message' => 'Success',
+                'data' => $item
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'error' => 0,
+            'message' => 'Success',
+            'data' => $item
+        ], 404);
+    }
+
+    public function all()
+    {
+        $items = Item::with('unit', 'category')->get();
+
+        return response()->json([
+            'status' => 'success',
+            'error' => 0,
+            'message' => 'Success',
+            'data' => $items,
+            'totalCount' => $items->count()
+        ]);
     }
 }
