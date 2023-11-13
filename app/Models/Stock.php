@@ -12,6 +12,16 @@ class Stock extends Model
 
     public function location()
     {
-        $this->hasMany(Location::class);
+        return $this->belongsTo(Location::class);
+    }
+
+    public function item()
+    {
+        return $this->belongsTo(Item::class);
+    }
+
+    public function stock_type()
+    {
+        return $this->belongsTo(StockType::class);
     }
 }

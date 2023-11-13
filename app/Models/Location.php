@@ -11,4 +11,9 @@ class Location extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = ['id'];
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
 }
