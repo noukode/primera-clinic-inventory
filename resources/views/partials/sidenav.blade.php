@@ -11,11 +11,15 @@
                         Dashboards
                     </a>
                     <!-- Sidenav Heading (Item Request)-->
-                    <div class="sidenav-menu-heading">Purchase Order</div>
+                    <div class="sidenav-menu-heading">Stocks</div>
                     <!-- Sidenav (Pending Request)-->
                     <a class="nav-link" href="/purchase-order">
                         <div class="nav-link-icon"><i data-feather="download"></i></div>
                         Purchase Order
+                    </a>
+                    <a class="nav-link" href="/stock">
+                        <div class="nav-link-icon"><i data-feather="package"></i></div>
+                        Stock
                     </a>
                     {{-- <!-- Sidenav (Complete Request)-->
                     <a class="nav-link" href="/complete-purchase-order">

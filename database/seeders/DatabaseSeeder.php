@@ -18,5 +18,14 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        $this->call(UserSeeder::class);
+        $this->call(UserRoleSeeder::class);
+        $this->call(UnitSeeder::class);
+        $this->call(CategorySeeder::class);
+        $this->call(ItemSeeder::class);
+        $this->call(BranchSeeder::class);
+        $this->call(LocationSeeder::class);
+        $this->call(StocksTableSeeder::class);
+        $this->call(StockTypesTableSeeder::class);
     }
 }

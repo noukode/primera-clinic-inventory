@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Stock;
 use App\Http\Requests\StoreStockRequest;
 use App\Http\Requests\UpdateStockRequest;
+use App\Models\Branch;
+use App\Models\Category;
+use App\Models\StockType;
+use App\Models\Unit;
 
 class StockController extends Controller
 {
@@ -13,7 +17,60 @@ class StockController extends Controller
      */
     public function index()
     {
-        //
+        $title = 'Stock';
+        $stock_types = StockType::get();
+        $branches = Branch::get();
+        $units = Unit::get();
+        $categories = Category::get();
+        $stocks = Stock::with('item')->groupBy('location_id', 'stock_type_id', 'item_id')
+        ->selectRaw('sum(quantity) as sum, location_id, stock_type_id, item_id')
+        // ->leftJoin('items as i', function($join){
+        //     return $join->on('i.id', '=', 'stocks.item_id');
+        // })
+        ->with([
+            'item' => function($query){
+                return $query->select('id', 'kode_item', 'name', 'category_id', 'unit_id')->with([
+                    'category' => function($q){
+                        return $q->select('id', 'name');
+                    },
+                    'unit' => function($q){
+                        return $q->select('id', 'name');
+                    },
+                ]);
+            },
+            'location.branch'
+        ]);
+        if(request('search')){
+            $stocks = $stocks->orWhereHas('item', function($q){
+                return $q->where('name', 'LIKE', '%'. request('search') . '%')->orWhere('kode_item', 'LIKE', '%'. request('search') . '%');
+            })->orWhereHas('location', function($q){
+                return $q->where('locations.name', 'LIKE', '%' . request('search') . '%');
+            });
+        }
+
+        if(request('stock_type_id')){
+            $stocks = $stocks->where('stock_type_id', request("stock_type_id"));
+        }
+
+        if(request('branch_id')){
+            $stocks = $stocks->whereHas('location', function($q){
+                return $q->where('branch_id', request('branch_id'));
+            });
+        }
+
+        if(request('unit_id')){
+            $stocks = $stocks->whereHas('item', function($q){
+                return $q->where('unit_id', request('unit_id'));
+            });
+        }
+
+        if(request('category_id')){
+            $stocks = $stocks->whereHas('item', function($q){
+                return $q->where('category_id', request('category_id'));
+            });
+        }
+        $stocks = $stocks->paginate(15);
+        return view('pages.stock.index', compact('title', 'stock_types', 'branches', 'units', 'categories', 'stocks'));
     }
 
     /**

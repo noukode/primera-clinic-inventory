@@ -15,8 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('purchase_no')->unique();
             $table->date('purchase_date');
+            $table->string('project_name');
             $table->tinyInteger('purchase_status');
+            $table->integer('branch_id');
+            $table->integer('stock_type_id');
+            $table->integer('created_by');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

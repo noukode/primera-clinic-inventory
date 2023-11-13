@@ -2,29 +2,29 @@
 
 namespace Database\Seeders;
 
-use App\Models\Location;
+use App\Models\Unit;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class LocationSeeder extends Seeder
+class UnitSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Location::insert([
+        Unit::insert([
             [
-                'branch_id' => 1,
-                'name' => 'AA-01-01',
+                'name' => 'pcs',
+                'slug' => 'pcs',
             ],
             [
-                'branch_id' => 1,
-                'name' => 'AA-01-02',
+                'name' => 'pack',
+                'slug' => 'pack',
             ],
             [
-                'branch_id' => 2,
-                'name' => 'AA-01-01',
+                'name' => 'roll',
+                'slug' => 'roll',
             ],
         ]);
     }

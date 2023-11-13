@@ -16,7 +16,11 @@ return new class extends Migration
             $table->integer('item_id');
             $table->integer('quantity');
             $table->integer('location_id');
+            $table->integer('stock_type_id');
+            $table->tinyInteger('condition')->default(0)->nullable();
+            $table->date('exp_date')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -2,29 +2,29 @@
 
 namespace Database\Seeders;
 
-use App\Models\Location;
+use App\Models\Category;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class LocationSeeder extends Seeder
+class CategorySeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Location::insert([
+        Category::insert([
             [
-                'branch_id' => 1,
-                'name' => 'AA-01-01',
+                'name' => 'Alat',
+                'slug' => 'alat',
             ],
             [
-                'branch_id' => 1,
-                'name' => 'AA-01-02',
+                'name' => 'Dispose',
+                'slug' => 'dispose',
             ],
             [
-                'branch_id' => 2,
-                'name' => 'AA-01-01',
+                'name' => 'Obat',
+                'slug' => 'obat',
             ],
         ]);
     }

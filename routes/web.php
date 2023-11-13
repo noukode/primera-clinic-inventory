@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\StockController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,7 @@ Route::middleware('auth')->group(function(){
         return view('pages.dashboard.dashboard', compact('title'));
     });
     Route::resource('purchase-order', PurchaseOrderController::class);
+    Route::resource('stock', StockController::class);
     Route::resource('item', ItemController::class);
     Route::post('item/get/{id}', [ItemController::class, 'get'])->name('item.get');
     Route::post('item/all', [ItemController::class, 'all'])->name('item.all');
