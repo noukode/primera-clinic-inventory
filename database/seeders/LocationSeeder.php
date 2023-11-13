@@ -22,6 +22,10 @@ class LocationSeeder extends Seeder
                 'branch_id' => 1,
                 'name' => 'AA-01-02',
             ],
+            [
+                'branch_id' => 2,
+                'name' => 'AA-01-01',
+            ],
         ]);
     }
 }
