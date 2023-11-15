@@ -16,4 +16,9 @@ class Location extends Model
     {
         return $this->belongsTo(Branch::class);
     }
+
+    public function stocks()
+    {
+        return $this->hasMany(Stock::class);
+    }
 }

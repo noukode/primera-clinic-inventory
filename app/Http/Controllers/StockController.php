@@ -7,6 +7,8 @@ use App\Http\Requests\StoreStockRequest;
 use App\Http\Requests\UpdateStockRequest;
 use App\Models\Branch;
 use App\Models\Category;
+use App\Models\Item;
+use App\Models\Location;
 use App\Models\StockType;
 use App\Models\Unit;
 
@@ -92,9 +94,43 @@ class StockController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Stock $stock)
+    public function show(Item $stock)
     {
-        //
+        $title = $stock->name;
+        $item = $stock;
+        $stock = Stock::where('item_id', $item->id);
+        $locations = Location::with('branch')->whereHas('stocks', function($query)use($item){
+            return $query->where('item_id', $item->id);
+        });
+
+        $stock_types = StockType::whereHas('stocks', function($query)use($item){
+            return $query->where('item_id', $item->id);
+        })->get();
+
+        $branches = Branch::get();
+
+        $location = null;
+        $stock_type = null;
+        if(request('branch_id'))
+        {
+            $locations = $locations->where('branch_id', request('branch_id'));
+            $stock = $stock->whereHas('location', function($query){
+                return $query->where('branch_id', request('branch_id'));
+            });
+        }
+        if(request('location_id')){
+            $location = Location::where('id', request('location_id'))->first();
+            $stock = $stock->where('location_id', request('location_id'));
+        }
+
+        if(request('stock_type')){
+            $stock_type = StockType::where('id', request('stock_type'))->first();
+            $stock = $stock->where('stock_type_id', request('stock_type'));
+        }
+
+        $locations = $locations->get();
+        $stock = $stock->get()->sum('quantity');
+        return view('pages.stock.show', compact('title', 'item', 'stock', 'locations', 'location', 'stock_types', 'stock_type', 'branches'));
     }
 
     /**

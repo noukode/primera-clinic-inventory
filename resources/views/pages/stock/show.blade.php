@@ -7,19 +7,15 @@
                 <div class="col-auto mt-4">
                     <h1 class="page-header-title">
                         <div class="page-header-icon"><i data-feather="package"></i></div>
-                        Stock List
+                        Stock {{ $item->name }}
                     </h1>
-                </div>
-                <div class="col-auto mt-4">
-                    <a href="/item/create" class="btn btn-sm btn-info"><i data-feather="plus"></i> Add</a>
-                    {{-- <a href="#" class="btn btn-sm btn-success"><i data-feather="log-out"></i> Export</a>
-                    <a href="#" class="btn btn-sm btn-warning"><i data-feather="log-in"></i> Import</a> --}}
                 </div>
             </div>
             <nav class="mt-4 rounded" aria-label="breadcrumb">
                 <ol class="breadcrumb px-3 py-2 rounded mb-0">
                     <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Stock</li>
+                    <li class="breadcrumb-item"><a href="/stock">Stock</a></li>
+                    <li class="breadcrumb-item active">{{ $item->name }}</li>
                 </ol>
             </nav>
         </div>
@@ -29,9 +25,6 @@
 <div class="container-fluid px-4 mt-n10">
     <div class="card">
         <div class="card-body">
-            @if(session('success'))
-                <div class="alert alert-{{ session('success')['status'] }}">{{ session('success')['message'] }}</div>
-            @endif
             <form action="">
                 <div class="row mb-2">
                     <div class="col-lg-4 mb-2">
@@ -43,12 +36,115 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="col-lg-3 mb-2">
+                        <label for="stock_type">Tipe Stock</label>
+                        <select name="stock_type" id="stock_type" class="form-control">
+                            <option value="" {{ request('stock_type') === null ? 'selected' : '' }}></option>
+                            @foreach ($stock_types as $st)
+                            <option {{ request('stock_type') == $st->id ? 'selected' : '' }} value="{{ $st->id }}">{{ $st->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-lg-4 mb-2">
+                        <label for="location_id">Location</label>
+                        <select name="location_id" id="location_id" class="form-control">
+                            <option value="" {{ request('location_id') === null ? 'selected' : '' }}></option>
+                            @foreach ($locations as $st)
+                            <option {{ request('location_id') == $st->id ? 'selected' : '' }} value="{{ $st->id }}">{{ $st->name }} ({{ $st->branch->name }})</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-lg-1 mb-2 align-self-end">
+                        <button class="btn btn-primary">Cari</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container-fluid px-4 mt-3">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <div class="mb-3">
+                        <label for="kode_item" class="form-label">Kode Item</label>
+                        <div class="fs-4 fw-bold">{{ $item->kode_item }}</div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Item Name</label>
+                        <div class="fs-4 fw-bold">{{ $item->name }}</div>
+                    </div>
+                </div>
+                @if (request('location_id'))
+                    <div class="col-12 col-lg-6">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Lokasi</label>
+                            <div class="fs-4 fw-bold">{{ $location->name }}</div>
+                        </div>
+                    </div>
+                @endif
+                @if (request('stock_type'))
+                    <div class="col-12 col-lg-6">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Tipe Stock</label>
+                            <div class="fs-4 fw-bold">{{ $stock_type->name }}</div>
+                        </div>
+                    </div>
+                @endif
+                {{-- <div class="col-12">
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" name="description" disabled>{{ $item->description }}</textarea>
+                    </div>
+                </div> --}}
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="category_id" class="form-label">Item Category</label>
+                        <div class="fs-4 fw-bold">{{ $item->category->name }}</div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="unit_id" class="form-label">Unit</label>
+                        <div class="fs-4 fw-bold">{{ $item->unit->name }}</div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label for="stock" class="form-label">Stock</label>
+                        <div class="fs-4 fw-bold">{{ $stock }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid px-4 mt-3">
+    <div class="card">
+        <div class="card-body">
+            @if(session('success'))
+                <div class="alert alert-{{ session('success')['status'] }}">{{ session('success')['message'] }}</div>
+            @endif
+            {{-- <form action="">
+                <div class="row mb-2">
                     <div class="col-lg-4 mb-2">
                         <label for="stock_type">Tipe Stock</label>
                         <select name="stock_type_id" id="stock_type" class="form-control">
                             <option value="" {{ request('stock_type_id') === null ? 'selected' : '' }}></option>
                             @foreach ($stock_types as $st)
                             <option {{ request('stock_type_id') == $st->id ? 'selected' : '' }} value="{{ $st->id }}">{{ $st->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-lg-4 mb-2">
+                        <label for="branch">Cabang</label>
+                        <select name="branch_id" id="branch" class="form-control">
+                            <option value="" {{ request('branch_id') === null ? 'selected' : '' }}></option>
+                            @foreach ($branches as $branch)
+                            <option {{ request('branch_id') == $branch->id ? 'selected' : '' }} value="{{ $branch->id }}" >{{ $branch->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -78,8 +174,8 @@
                         <button class="btn btn-primary">Cari</button>
                     </div>
                 </div>
-            </form>
-            <table class="table table-sm table-striped" id="item-table">
+            </form> --}}
+            {{-- <table class="table table-sm table-striped" id="item-table">
                 <thead>
                     <tr>
                         <th>Kode Item</th>
@@ -124,7 +220,7 @@
                     @endforeach
                 </tbody>
             </table>
-            {{ $stocks->appends(request()->all())->onEachSide(2)->links() }}
+            {{ $stocks->appends(request()->all())->onEachSide(2)->links() }} --}}
         </div>
     </div>
 </div>
