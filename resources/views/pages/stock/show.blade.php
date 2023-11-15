@@ -128,99 +128,57 @@
             @if(session('success'))
                 <div class="alert alert-{{ session('success')['status'] }}">{{ session('success')['message'] }}</div>
             @endif
-            {{-- <form action="">
-                <div class="row mb-2">
-                    <div class="col-lg-4 mb-2">
-                        <label for="stock_type">Tipe Stock</label>
-                        <select name="stock_type_id" id="stock_type" class="form-control">
-                            <option value="" {{ request('stock_type_id') === null ? 'selected' : '' }}></option>
-                            @foreach ($stock_types as $st)
-                            <option {{ request('stock_type_id') == $st->id ? 'selected' : '' }} value="{{ $st->id }}">{{ $st->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-lg-4 mb-2">
-                        <label for="branch">Cabang</label>
-                        <select name="branch_id" id="branch" class="form-control">
-                            <option value="" {{ request('branch_id') === null ? 'selected' : '' }}></option>
-                            @foreach ($branches as $branch)
-                            <option {{ request('branch_id') == $branch->id ? 'selected' : '' }} value="{{ $branch->id }}" >{{ $branch->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-lg-4 mb-2">
-                        <label for="unit">Unit</label>
-                        <select name="unit_id" id="unit" class="form-control">
-                            <option value="" {{ request('unit_id') === null ? 'selected' : '' }}></option>
-                            @foreach ($units as $unit)
-                                <option {{ request('unit_id') == $unit->id ? 'selected' : '' }} value="{{ $unit->id }}">{{ $unit->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-lg-5 mb-2">
-                        <label for="category">Category</label>
-                        <select name="category_id" id="category" class="form-control">
-                            <option value="" {{ request('category_id') === null ? 'selected' : '' }}></option>
-                            @foreach ($categories as $category)
-                                <option {{ request('category_id') == $category->id ? 'selected' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-lg-5 mb-2">
-                        <label for="search">Cari</label>
-                        <input type="text" name="search" class="form-control" id="search" value="{{ request('search') }}">
-                    </div>
-                    <div class="col-lg-2 mb-2 align-self-end">
-                        <button class="btn btn-primary">Cari</button>
-                    </div>
-                </div>
-            </form> --}}
-            {{-- <table class="table table-sm table-striped" id="item-table">
+            <table class="table table-sm table-striped" id="item-table">
                 <thead>
                     <tr>
-                        <th>Kode Item</th>
+                        <th>Tanggal</th>
                         <th>Item</th>
                         <th>Category</th>
                         <th>Unit</th>
                         <th>Location</th>
                         <th>Branch</th>
                         <th>Tipe Stock</th>
-                        <th>Stock</th>
+                        <th>Type</th>
+                        <th>Qty</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>Kode Item</th>
+                        <th>Tanggal</th>
                         <th>Item</th>
                         <th>Category</th>
                         <th>Unit</th>
                         <th>Location</th>
                         <th>Branch</th>
                         <th>Tipe Stock</th>
-                        <th>Stock</th>
+                        <th>Type</th>
+                        <th>Qty</th>
                         <th>Action</th>
                     </tr>
                 </tfoot>
                 <tbody>
-                    @foreach ($stocks as $stock)
+                    @foreach ($stock_histories as $stock)
                         <tr>
-                            <td>{{ $stock->item->kode_item }}</td>
-                            <td>{{ $stock->item->name }}</td>
-                            <td>{{ $stock->item->category->name }}</td>
-                            <td>{{ $stock->item->unit->name }}</td>
-                            <td>{{ $stock->location->name }}</td>
-                            <td>{{ $stock->location->branch->name }}</td>
-                            <td>{{ $stock->stock_type->name }}</td>
-                            <td>{{ $stock->sum }}</td>
+                            <td>{{ $stock->created_at }}</td>
+                            <td>{{ $stock->detail->item_detail->name }}</td>
+                            <td>{{ $stock->detail->item_detail->category->name }}</td>
+                            <td>{{ $stock->detail->item_detail->unit->name }}</td>
+                            {{-- <td></td> --}}
+                            {{-- <td></td> --}}
+                            <td>{{ $stock->detail->item_detail->location }}</td>
+                            <td>{{ $stock->detail->item_detail->branch }}</td>
+                            <td>{{ $stock->detail->item_detail->stock_type }}</td>
+                            <td>{{ $stock->type }}</td>
+                            <td><span class="{{ $stock->type == "in" ? 'text-success' : 'text-danger' }}">{{ $stock->qty }}</span></td>
                             <td>
-                                <a class="btn btn-sm btn-info me-2" href="/stock/{{ $stock->item->id }}?branch_id={{ $stock->location->branch_id }}&location_id={{ $stock->location_id }}&stock_type={{ $stock->stock_type_id }}"><i data-feather="info"></i></a>
+                                <a href="#" data-bs-toggle="tooltip" data-bs-title="123/POMUK3PC/XI/2023 ({{ $stock->detail->foreign_id->project_name }})"><i data-feather="info"></i></a>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-            {{ $stocks->appends(request()->all())->onEachSide(2)->links() }} --}}
+            {{ $stock_histories->appends(request()->all())->onEachSide(2)->links() }}
         </div>
     </div>
 </div>

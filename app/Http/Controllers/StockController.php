@@ -9,6 +9,7 @@ use App\Models\Branch;
 use App\Models\Category;
 use App\Models\Item;
 use App\Models\Location;
+use App\Models\StockHistory;
 use App\Models\StockType;
 use App\Models\Unit;
 
@@ -99,6 +100,9 @@ class StockController extends Controller
         $title = $stock->name;
         $item = $stock;
         $stock = Stock::where('item_id', $item->id);
+
+        $stock_histories = StockHistory::select();
+
         $locations = Location::with('branch')->whereHas('stocks', function($query)use($item){
             return $query->where('item_id', $item->id);
         });
@@ -117,20 +121,25 @@ class StockController extends Controller
             $stock = $stock->whereHas('location', function($query){
                 return $query->where('branch_id', request('branch_id'));
             });
+            $stock_histories = $stock_histories->where('branch_id', request('branch_id'));
         }
         if(request('location_id')){
             $location = Location::where('id', request('location_id'))->first();
             $stock = $stock->where('location_id', request('location_id'));
+            $stock_histories = $stock_histories->where('location_id', request('location_id'));
         }
 
         if(request('stock_type')){
             $stock_type = StockType::where('id', request('stock_type'))->first();
             $stock = $stock->where('stock_type_id', request('stock_type'));
+            $stock_histories = $stock_histories->where('stock_type_id', request('stock_type'));
         }
+
+        $stock_histories = $stock_histories->orderBy('created_at', 'DESC')->paginate(15);
 
         $locations = $locations->get();
         $stock = $stock->get()->sum('quantity');
-        return view('pages.stock.show', compact('title', 'item', 'stock', 'locations', 'location', 'stock_types', 'stock_type', 'branches'));
+        return view('pages.stock.show', compact('title', 'item', 'stock', 'locations', 'location', 'stock_types', 'stock_type', 'branches', 'stock_histories'));
     }
 
     /**
