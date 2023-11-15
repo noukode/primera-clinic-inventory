@@ -35,20 +35,20 @@
             <form action="">
                 <div class="row mb-2">
                     <div class="col-lg-4 mb-2">
+                        <label for="branch">Branch</label>
+                        <select name="branch_id" id="branch" class="form-control">
+                            <option value="" {{ request('branch_id') === null ? 'selected' : '' }}></option>
+                            @foreach ($branches as $branch)
+                            <option {{ request('branch_id') == $branch->id ? 'selected' : '' }} value="{{ $branch->id }}" >{{ $branch->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-lg-4 mb-2">
                         <label for="stock_type">Tipe Stock</label>
                         <select name="stock_type_id" id="stock_type" class="form-control">
                             <option value="" {{ request('stock_type_id') === null ? 'selected' : '' }}></option>
                             @foreach ($stock_types as $st)
                             <option {{ request('stock_type_id') == $st->id ? 'selected' : '' }} value="{{ $st->id }}">{{ $st->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-lg-4 mb-2">
-                        <label for="branch">Cabang</label>
-                        <select name="branch_id" id="branch" class="form-control">
-                            <option value="" {{ request('branch_id') === null ? 'selected' : '' }}></option>
-                            @foreach ($branches as $branch)
-                            <option {{ request('branch_id') == $branch->id ? 'selected' : '' }} value="{{ $branch->id }}" >{{ $branch->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -118,7 +118,7 @@
                             <td>{{ $stock->stock_type->name }}</td>
                             <td>{{ $stock->sum }}</td>
                             <td>
-                                <a class="btn btn-sm btn-info me-2" href="/stock/{{ $stock->id }}"><i data-feather="info"></i></a>
+                                <a class="btn btn-sm btn-info me-2" href="/stock/{{ $stock->item->id }}?branch_id={{ $stock->location->branch_id }}&location_id={{ $stock->location_id }}&stock_type={{ $stock->stock_type_id }}"><i data-feather="info"></i></a>
                             </td>
                         </tr>
                     @endforeach

@@ -2,23 +2,19 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Location extends Model
+class StockHistory extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $guarded = ['id'];
 
-    public function branch()
+    public function detail(): Attribute
     {
-        return $this->belongsTo(Branch::class);
-    }
-
-    public function stocks()
-    {
-        return $this->hasMany(Stock::class);
+        return Attribute::make(get: fn(mixed $value) => json_decode($value));
     }
 }
