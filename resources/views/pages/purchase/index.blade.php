@@ -99,7 +99,7 @@
                                 <td>{{ $purchase->details_count }}</td>
                                 <td>{{ $purchase->branch->name }}</td>
                                 <td>{{ $purchase->stock_type->name }}</td>
-                                <td>{{ $purchase->purchase_status }}</td>
+                                <td><span class="badge rounded-pill bg-{{ config('config.purchase_order.status_color.'. $purchase->purchase_status) }}">{{ config('config.purchase_order.status.' . $purchase->purchase_status) }}</span></td>
                                 <td>{{ $purchase->purchase_date }}</td>
                                 <td>
                                     <a class="btn btn-sm btn-info me-2" href="{{ route('purchase-order.show', $purchase->id) }}"><i data-feather="info"></i></a>

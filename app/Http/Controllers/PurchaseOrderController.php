@@ -91,7 +91,14 @@ class PurchaseOrderController extends Controller
      */
     public function show(PurchaseOrder $purchaseOrder)
     {
-        //
+        $title = 'Detail Purchase Order';
+        $purchaseOrder = $purchaseOrder->with(['details' => function($query){
+            return $query->with(['item' => function($query){
+                return $query->with(['category', 'unit']);
+            }]);
+        }])->where('id', $purchaseOrder->id)->first();
+
+        return view('pages.purchase.show', compact('title', 'purchaseOrder'));
     }
 
     /**

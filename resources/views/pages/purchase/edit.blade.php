@@ -189,9 +189,6 @@
                 closeOnOutsideClick: false
             }).dxLoadPanel('instance');
 
-            let items = [
-            ];
-
             let dataSource = new DevExpress.data.CustomStore({
                 load: function(loadOptions){
                     let deferred = $.Deferred(),
@@ -215,7 +212,8 @@
                             loadPanel.hide();
                         },
                         error: function() {
-                            deferred.reject("Data Loading Error");
+                            loadPanel.hide();
+                            Helper.simpleAlert('Error', 'Something went wrong', 'error');
                         },
                     });
 
@@ -268,7 +266,9 @@
                         loadPanel.hide();
                     },
                     error: function() {
-                        // deferred.reject("Data Loading Error");
+
+                        loadPanel.hide();
+                        Helper.simpleAlert('Error', 'Something went wrong', 'error');
                     },
                 })
 
@@ -279,10 +279,8 @@
                 e.preventDefault();
                 let item = {};
                 let id = dxSelect.option('value');
-                // console.log(id);
                 const qty = $('#qty').val();
                 const price = $('#price').val();
-                // console.log(id, qty, price);
                 modalLoadPanel.show();
                 let filteredItem = items.filter(el => el.id === id);
                 $.ajax({
@@ -304,7 +302,8 @@
                         tableUpdater();
                     },
                     error: function() {
-                        // deferred.reject("Data Loading Error");
+                        modalLoadPanel.hide();
+                        Helper.simpleAlert('Error', 'Something went wrong', 'error');
                     },
                 })
 
@@ -317,7 +316,6 @@
 
             $('#table-value').on('click', '.btn-delete', function(e){
                 let id = $(e.currentTarget).data('key');
-                // items = items.slice(key+1).concat(items.slice(0, key));
                 Helper.confirmAlert('Anda yakin ingin menghapus data ini?', 'warning', 'Ya').then(result => {
                     if(result.isConfirmed){
                         loadPanel.show();
@@ -336,7 +334,8 @@
                                 tableUpdater();
                             },
                             error: function() {
-                                // deferred.reject("Data Loading Error");
+                                loadPanel.hide();
+                                Helper.simpleAlert('Error', 'Something went wrong', 'error');
                             },
                         })
                     }
@@ -364,7 +363,8 @@
                         Helper.simpleNotification(result.message, 'Berhasil menyimpan data!', result.status);
                     },
                     error: function() {
-                        alert('Error');
+                        loadPanel.hide();
+                        Helper.simpleAlert('Error', 'Something went wrong', 'error');
                     },
                 });
             });
