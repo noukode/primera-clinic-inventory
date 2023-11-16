@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\PurchaseOrder;
 use App\Http\Requests\StorePurchaseOrderRequest;
 use App\Http\Requests\UpdatePurchaseOrderRequest;
+use App\Models\Branch;
 use App\Models\PurchaseOrderDetail;
+use App\Models\StockType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -17,12 +19,14 @@ class PurchaseOrderController extends Controller
     public function index(Request $request)
     {
         $title = 'Pending Purchase Order';
+        $branches = Branch::get();
+        $stock_types = StockType::get();
         $purchases = new PurchaseOrder();
         if($request->search){
             $purchases = $purchases->where('purchase_no', 'LIKE', '%'. $request->search .'%');
         }
-        $purchases = $purchases->paginate(15);
-        return view('pages.purchase.index',compact('title', 'purchases'));
+        $purchases = $purchases->withCount('details')->paginate(15);
+        return view('pages.purchase.index',compact('title', 'purchases', 'branches', 'stock_types'));
     }
 
     /**
@@ -39,30 +43,37 @@ class PurchaseOrderController extends Controller
      */
     public function store(StorePurchaseOrderRequest $request)
     {
-        $po = PurchaseOrder::create([
-            'purchase_no' => $request->po_no,
-            'purchase_date' => Carbon::now(),
-            'purchase_status' => 0,
-        ]);
+        $new_po = sprintf('%03d', 1) . '/POMUK3PC/' . $this->romawi(date('m')) . '/' . date('Y') ;
+        $last_po = PurchaseOrder::where('purchase_no', 'LIKE', '%'. date('Y'))->orderBy('created_at', 'DESC')->first();
 
-        $items = [];
-        foreach ($request->items as $key => $item) {
-            $items[] = [
-                'purchase_order_id' => $po->id,
-                'item_id' => $item->id,
-                'qty' => $item->qty,
-                'price' => $item->price
-            ];
+        if($last_po){
+            $split_last_po = explode('/', $last_po->purchase_no);
+            $new_po = sprintf(($split_last_po[0] + 1)) . '/POMUK3PC/' . $this->romawi(date('m')) . '/' . date('Y') ;
         }
 
-        PurchaseOrderDetail::insert($items);
-
-        return response()->json([
-            'status' => 'success',
-            'error' => 0,
-            'message' => 'Success',
-            'data' => $po,
+        $po = PurchaseOrder::create([
+            'purchase_no' => $new_po ,
+            'project_name' => $request->project_name,
+            'branch_id' => $request->branch_id,
+            'stock_type_id' => $request->stock_type_id,
+            'purchase_date' => Carbon::now(),
+            'purchase_status' => 0,
+            'created_by' => auth()->user()->id
         ]);
+
+        // $items = [];
+        // foreach ($request->items as $key => $item) {
+        //     $items[] = [
+        //         'purchase_order_id' => $po->id,
+        //         'item_id' => $item->id,
+        //         'qty' => $item->qty,
+        //         'price' => $item->price
+        //     ];
+        // }
+
+        // PurchaseOrderDetail::insert($items);
+
+        return redirect()->to(route('purchase-order.edit', $po->id));
     }
 
     /**
@@ -78,7 +89,16 @@ class PurchaseOrderController extends Controller
      */
     public function edit(PurchaseOrder $purchaseOrder)
     {
-        //
+        $title = 'Edit Purchase Order';
+        $purchaseOrder = $purchaseOrder->with(['details' => function($query){
+            return $query->with(['item' => function($query){
+                return $query->with(['category', 'unit']);
+            }]);
+        }])->where('id', $purchaseOrder->id)->first();
+        $branches = Branch::get();
+        $stock_types = StockType::get();
+
+        return view('pages.purchase.edit', compact('title', 'purchaseOrder', 'branches', 'stock_types'));
     }
 
     /**
@@ -86,7 +106,16 @@ class PurchaseOrderController extends Controller
      */
     public function update(UpdatePurchaseOrderRequest $request, PurchaseOrder $purchaseOrder)
     {
-        //
+        $purchaseOrder->project_name = $request->project_name;
+        $purchaseOrder->branch_id = $request->branch_id;
+        $purchaseOrder->stock_type_id = $request->stock_type_id;
+        $purchaseOrder->save();
+
+        return response()->json([
+            'status' => 'success',
+            'error' => 0,
+            'message' => 'Success'
+        ]);
     }
 
     /**
@@ -95,5 +124,12 @@ class PurchaseOrderController extends Controller
     public function destroy(PurchaseOrder $purchaseOrder)
     {
         //
+    }
+
+    public function romawi($angka)
+    {
+        $arr_roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+
+        return $arr_roman[$angka-1];
     }
 }

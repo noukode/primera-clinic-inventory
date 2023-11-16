@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\PurchaseOrderDetailController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
@@ -41,6 +42,9 @@ Route::middleware('auth')->group(function(){
     Route::resource('category', CategoryController::class)->except('show');
     Route::resource('unit', UnitController::class)->except('show');
     Route::resource('user', UserController::class);
+    Route::post('purchase-order/store', [PurchaseOrderDetailController::class, 'store'])->name('purchase-order-detail.store');
+    Route::post('purchase-order/delete', [PurchaseOrderDetailController::class, 'delete'])->name('purchase-order-detail.delete');
+    Route::post('purchase-order/get', [PurchaseOrderDetailController::class, 'get_by_po'])->name('purchase-order-detail.get_by_po');
 
     Route::get('/change-password', [AuthController::class, 'change_password'])->name('change_password');
     Route::post('/change-password', [AuthController::class, 'do_change_password'])->name('do_change_password');

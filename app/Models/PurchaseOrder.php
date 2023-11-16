@@ -11,4 +11,9 @@ class PurchaseOrder extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = ['id'];
+
+    public function details()
+    {
+        return $this->hasMany(PurchaseOrderDetail::class);
+    }
 }

@@ -22,7 +22,9 @@ class StorePurchaseOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'project_name' => 'required|string',
+            'branch_id' => 'required|integer|exists:branches,id',
+            'stock_type_id' => 'required|integer|exists:stock_types,id'
         ];
     }
 }
