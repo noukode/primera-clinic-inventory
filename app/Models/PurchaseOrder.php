@@ -16,4 +16,14 @@ class PurchaseOrder extends Model
     {
         return $this->hasMany(PurchaseOrderDetail::class);
     }
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
+    public function stock_type()
+    {
+        return $this->belongsTo(StockType::class);
+    }
 }

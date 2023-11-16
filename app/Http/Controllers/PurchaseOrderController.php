@@ -16,16 +16,26 @@ class PurchaseOrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $title = 'Pending Purchase Order';
+        $title = 'Purchase Order';
         $branches = Branch::get();
         $stock_types = StockType::get();
         $purchases = new PurchaseOrder();
-        if($request->search){
-            $purchases = $purchases->where('purchase_no', 'LIKE', '%'. $request->search .'%');
+
+        if(request('branch_id')){
+            $purchases = $purchases->where('branch_id', request('branch_id'));
         }
-        $purchases = $purchases->withCount('details')->paginate(15);
+
+        if(request('stock_type_id')){
+            $purchases = $purchases->where('stock_type_id', request('stock_type_id'));
+        }
+
+        if(request('search')){
+            $purchases = $purchases->where('purchase_no', 'LIKE', '%'. request('search') .'%')->orWhere('project_name', 'LIKE', '%'. request('search') .'%');
+        }
+
+        $purchases = $purchases->with(['stock_type', 'branch'])->withCount('details')->paginate(15);
         return view('pages.purchase.index',compact('title', 'purchases', 'branches', 'stock_types'));
     }
 

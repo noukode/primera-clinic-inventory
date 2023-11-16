@@ -24,41 +24,55 @@
     </div>
 </header>
 <!-- Main page content-->
-<div class="container-fluid px-4 mt-n10">
+<div class="container px-4 mt-n10">
     <div class="card">
         <div class="card-body">
             @if(session('success'))
                 <div class="alert alert-{{ session('success')['status'] }}">{{ session('success')['message'] }}</div>
             @endif
+            <form action="">
+                <div class="row mb-2">
+                    <div class="col-lg-5 mb-2">
+                        <label for="search">Cari</label>
+                        <input type="text" name="search" class="form-control" id="search" value="{{ request('search') }}">
+                    </div>
+                    <div class="col-lg-1 mb-2 align-self-end">
+                        <button class="btn btn-primary">Cari</button>
+                    </div>
+                </div>
+            </form>
             <table class="table table-sm table-striped">
                 <thead>
                     <tr>
-                        <th>Unit</th>
-                        <th>Slug</th>
+                        <th width="90%">Unit</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
                         <th>Unit</th>
-                        <th>Slug</th>
                         <th>Action</th>
                     </tr>
                 </tfoot>
                 <tbody>
-                    @foreach ($units as $unit)
+                    @if (count($units) === 0)
                         <tr>
-                            <td>{{ $unit->name }}</td>
-                            <td></td>
-                            <td>
-                                <a class="btn btn-datatable btn-icon btn-info me-2" href="{{ route('unit.edit', $unit->id) }}"><i data-feather="edit"></i></a>
-                                <a class="btn btn-datatable btn-icon btn-danger btn-delete" data-id="{{ $unit->id }}" href="#"><i data-feather="trash-2"></i></a>
-                            </td>
+                            <td colspan="2" class="text-center">No data.</td>
                         </tr>
-                    @endforeach
+                    @else
+                        @foreach ($units as $unit)
+                            <tr>
+                                <td>{{ $unit->name }}</td>
+                                <td>
+                                    <a class="btn btn-datatable btn-icon btn-info me-2" href="{{ route('unit.edit', $unit->id) }}"><i data-feather="edit"></i></a>
+                                    <a class="btn btn-datatable btn-icon btn-danger btn-delete" data-id="{{ $unit->id }}" href="#"><i data-feather="trash-2"></i></a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
-            {{ $units->onEachSide(2)->links() }}
+            {{ $units->appends(request()->all())->onEachSide(2)->links() }}
         </div>
     </div>
 </div>

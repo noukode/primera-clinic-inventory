@@ -16,8 +16,23 @@ class ItemController extends Controller
     public function index()
     {
         $title = 'Item List';
-        $items = Item::with('category', 'unit')->withSum('stock', 'quantity')->paginate(15);
-        return view('pages.item.index', compact('title', 'items'));
+        $units = Unit::get();
+        $categories = Category::get();
+        $items = Item::with('category', 'unit')->withSum('stock', 'quantity');
+        if(request('unit_id')){
+            $items = $items->where('unit_id', request('unit_id'));
+        }
+
+        if(request('category_id')){
+            $items = $items->where('category_id', request('category_id'));
+        }
+
+        if(request('search')){
+            $items = $items->where('name', 'LIKE', '%'. request('search') .'%')->orWhere('kode_item', 'LIKE', '%'. request('search') .'%');
+        }
+
+        $items = $items->paginate(15);
+        return view('pages.item.index', compact('title', 'items', 'units', 'categories'));
     }
 
     /**

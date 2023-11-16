@@ -26,21 +26,50 @@
     </div>
 </header>
 <!-- Main page content-->
-<div class="container-fluid px-4 mt-n10">
+<div class="container px-4 mt-n10">
     <div class="card">
         <div class="card-body">
             @if(session('success'))
                 <div class="alert alert-{{ session('success')['status'] }}">{{ session('success')['message'] }}</div>
             @endif
+            <form action="">
+                <div class="row mb-2">
+                    <div class="col-lg-3 mb-2">
+                        <label for="unit">Unit</label>
+                        <select name="unit_id" id="unit" class="form-control">
+                            <option value="" {{ request('unit_id') === null ? 'selected' : '' }}></option>
+                            @foreach ($units as $unit)
+                                <option {{ request('unit_id') == $unit->id ? 'selected' : '' }} value="{{ $unit->id }}">{{ $unit->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-lg-3 mb-2">
+                        <label for="category">Category</label>
+                        <select name="category_id" id="category" class="form-control">
+                            <option value="" {{ request('category_id') === null ? 'selected' : '' }}></option>
+                            @foreach ($categories as $category)
+                                <option {{ request('category_id') == $category->id ? 'selected' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-lg-5 mb-2">
+                        <label for="search">Cari</label>
+                        <input type="text" name="search" class="form-control" id="search" value="{{ request('search') }}">
+                    </div>
+                    <div class="col-lg-1 mb-2 align-self-end">
+                        <button class="btn btn-primary">Cari</button>
+                    </div>
+                </div>
+            </form>
             <table class="table table-sm table-striped" id="item-table">
                 <thead>
                     <tr>
-                        <th>Kode Item</th>
+                        <th width="10%">Kode Item</th>
                         <th>Item</th>
-                        <th>Category</th>
-                        <th>Unit</th>
-                        <th>Stock</th>
-                        <th>Action</th>
+                        <th width="10%">Category</th>
+                        <th width="10%">Unit</th>
+                        <th width="10%">Stock</th>
+                        <th width="15%">Action</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -54,23 +83,29 @@
                     </tr>
                 </tfoot>
                 <tbody>
-                    @foreach ($items as $item)
+                    @if (count($items) === 0)
                         <tr>
-                            <td>{{ $item->kode_item }}</td>
-                            <td>{{ $item->name }}</td>
-                            <td>{{ $item->category->name }}</td>
-                            <td>{{ $item->unit->name }}</td>
-                            <td>{{ $item->stock_sum_quantity }}</td>
-                            <td>
-                                <a class="btn btn-sm btn-info me-2" href="/item/{{ $item->id }}"><i data-feather="info"></i></a>
-                                <a class="btn btn-sm btn-success me-2" href="/item/{{ $item->id }}/edit"><i data-feather="edit"></i></a>
-                                <a class="btn btn-sm btn-danger btn-delete" data-id="{{ $item->id }}" href="#"><i data-feather="trash-2"></i></a>
-                            </td>
+                            <td colspan="6" class="text-center">No data.</td>
                         </tr>
-                    @endforeach
+                    @else
+                        @foreach ($items as $item)
+                            <tr>
+                                <td>{{ $item->kode_item }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->category->name }}</td>
+                                <td>{{ $item->unit->name }}</td>
+                                <td>{{ $item->stock_sum_quantity }}</td>
+                                <td>
+                                    <a class="btn btn-sm btn-info me-2" href="/item/{{ $item->id }}"><i data-feather="info"></i></a>
+                                    <a class="btn btn-sm btn-success me-2" href="/item/{{ $item->id }}/edit"><i data-feather="edit"></i></a>
+                                    <a class="btn btn-sm btn-danger btn-delete" data-id="{{ $item->id }}" href="#"><i data-feather="trash-2"></i></a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
-            {{ $items->onEachSide(2)->links() }}
+            {{ $items->appends(request()->all())->onEachSide(2)->links() }}
         </div>
     </div>
 </div>
