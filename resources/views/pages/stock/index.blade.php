@@ -11,7 +11,6 @@
                     </h1>
                 </div>
                 <div class="col-auto mt-4">
-                    <a href="/item/create" class="btn btn-sm btn-info"><i data-feather="plus"></i> Add</a>
                     {{-- <a href="#" class="btn btn-sm btn-success"><i data-feather="log-out"></i> Export</a>
                     <a href="#" class="btn btn-sm btn-warning"><i data-feather="log-in"></i> Import</a> --}}
                 </div>
@@ -85,11 +84,11 @@
                         <th>Kode Item</th>
                         <th>Item</th>
                         <th>Category</th>
-                        <th>Unit</th>
                         <th>Location</th>
                         <th>Branch</th>
                         <th>Tipe Stock</th>
                         <th>Stock</th>
+                        <th>Unit</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -98,30 +97,36 @@
                         <th>Kode Item</th>
                         <th>Item</th>
                         <th>Category</th>
-                        <th>Unit</th>
                         <th>Location</th>
                         <th>Branch</th>
                         <th>Tipe Stock</th>
                         <th>Stock</th>
+                        <th>Unit</th>
                         <th>Action</th>
                     </tr>
                 </tfoot>
                 <tbody>
-                    @foreach ($stocks as $stock)
+                    @if (count($stocks) === 0)
                         <tr>
-                            <td>{{ $stock->item->kode_item }}</td>
-                            <td>{{ $stock->item->name }}</td>
-                            <td>{{ $stock->item->category->name }}</td>
-                            <td>{{ $stock->item->unit->name }}</td>
-                            <td>{{ $stock->location->name }}</td>
-                            <td>{{ $stock->location->branch->name }}</td>
-                            <td>{{ $stock->stock_type->name }}</td>
-                            <td>{{ $stock->sum }}</td>
-                            <td>
-                                <a class="btn btn-sm btn-info me-2" href="/stock/{{ $stock->item->id }}?branch_id={{ $stock->location->branch_id }}&location_id={{ $stock->location_id }}&stock_type={{ $stock->stock_type_id }}"><i data-feather="info"></i></a>
-                            </td>
+                            <td colspan="9" class="text-center">No data.</td>
                         </tr>
-                    @endforeach
+                    @else
+                        @foreach ($stocks as $stock)
+                            <tr>
+                                <td>{{ $stock->item->kode_item }}</td>
+                                <td>{{ $stock->item->name }}</td>
+                                <td>{{ $stock->item->category->name }}</td>
+                                <td>{{ $stock->location->name }}</td>
+                                <td>{{ $stock->location->branch->name }}</td>
+                                <td>{{ $stock->stock_type->name }}</td>
+                                <td>{{ $stock->sum }}</td>
+                                <td>{{ $stock->item->unit->name }}</td>
+                                <td>
+                                    <a class="btn btn-sm btn-info me-2" href="/stock/{{ $stock->item->id }}?branch_id={{ $stock->location->branch_id }}&location_id={{ $stock->location_id }}&stock_type={{ $stock->stock_type_id }}"><i data-feather="info"></i></a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
             {{ $stocks->appends(request()->all())->onEachSide(2)->links() }}

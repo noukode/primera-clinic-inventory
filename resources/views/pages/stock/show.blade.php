@@ -82,7 +82,7 @@
                     <div class="col-12 col-lg-6">
                         <div class="mb-3">
                             <label for="name" class="form-label">Lokasi</label>
-                            <div class="fs-4 fw-bold">{{ $location->name }}</div>
+                            <div class="fs-4 fw-bold">{{ $location->name }} ({{ $location->branch->name }})</div>
                         </div>
                     </div>
                 @endif
