@@ -282,7 +282,6 @@
                 const qty = $('#qty').val();
                 const price = $('#price').val();
                 modalLoadPanel.show();
-                let filteredItem = items.filter(el => el.id === id);
                 $.ajax({
                     url: `{{ route('purchase-order-detail.store') }}`,
                     dataType: "json",

@@ -25,7 +25,16 @@
     <div class="row justify-content-center">
         <div class="col">
             <div class="card">
-                <div class="card-header">Purchase Order Details</div>
+                <div class="card-header">
+                    <div class="row align-items-center justify-content-between">
+                        <div class="col-auto">
+                            Purchase Order Details
+                        </div>
+                        <div class="col-auto">
+                            <a href="{{ route('purchase-order.print', $purchaseOrder->id) }}" class="btn btn-primary"><i class="fas fa-print me-2"></i> Cetak</a>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 col-lg-6 mb-3">

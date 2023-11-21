@@ -20,6 +20,8 @@ return new class extends Migration
             $table->integer('branch_id');
             $table->integer('stock_type_id');
             $table->integer('created_by');
+            $table->integer('known_by');
+            $table->integer('approved_by');
             $table->timestamps();
             $table->softDeletes();
         });

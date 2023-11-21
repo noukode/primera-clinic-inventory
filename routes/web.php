@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function(){
         return view('pages.dashboard.dashboard', compact('title'));
     });
     Route::resource('purchase-order', PurchaseOrderController::class);
+    Route::get('purchase-order/{purchase_order}/print', [PurchaseOrderController::class, 'print'])->name('purchase-order.print');
     Route::resource('stock', StockController::class);
     Route::resource('item', ItemController::class);
     Route::post('item/get/{id}', [ItemController::class, 'get'])->name('item.get');

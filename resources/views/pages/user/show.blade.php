@@ -45,6 +45,11 @@
                                 <option selected>{{ $user->role->name }}</option>
                             </select>
                         </div>
+                        @if ($user->ttd !== null)
+                            <div class="mb-3">
+                                <img src="/storage/{{ $user->ttd }}" class="img-fluid img-thumbnail" alt="">
+                            </div>
+                        @endif
                     </form>
                 </div>
             </div>

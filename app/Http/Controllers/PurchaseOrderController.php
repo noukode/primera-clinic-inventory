@@ -8,6 +8,7 @@ use App\Http\Requests\UpdatePurchaseOrderRequest;
 use App\Models\Branch;
 use App\Models\PurchaseOrderDetail;
 use App\Models\StockType;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -148,5 +149,16 @@ class PurchaseOrderController extends Controller
         $arr_roman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
 
         return $arr_roman[$angka-1];
+    }
+
+    public function print(PurchaseOrder $purchaseOrder)
+    {
+        $purchaseOrder = $purchaseOrder->with(['details.item', 'branch', 'stock_type', 'created_by_user', 'known_by_user', 'approved_by_user'])->where('id', $purchaseOrder->id)->first();
+        $disc = 0;
+        $pdf = Pdf::loadView('pages.purchase.print', compact('purchaseOrder', 'disc'));
+        // return $pdf->download($purchaseOrder->purchase_no . '.pdf');
+        return $pdf->stream();
+
+        // return view('pages.purchase.print', compact('purchaseOrder'));
     }
 }

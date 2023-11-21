@@ -28,7 +28,7 @@
             <div class="card mb-4">
                 <div class="card-header">Account Details</div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('user.store') }}">
+                    <form method="POST" enctype="multipart/form-data" action="{{ route('user.store') }}">
                         <!-- Form Row-->
                         @csrf
                         <div class="mb-3">
@@ -71,6 +71,20 @@
                                 </div>
                             @enderror
                         </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="ttd">Tanda Tangan</label>
+                            <input class="form-control @error('ttd')
+                                is-invalid
+                            @enderror" id="ttd" name="ttd" type="file" accept=".png" placeholder="Select File" />
+                            @error('ttd')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                            <div id="ttd-preview" class="d-none">
+                                <img src="#" class="ttd-preview img-thumbnail img-fluid" alt="">
+                            </div>
+                        </div>
                         <!-- Submit button-->
                         <button class="btn btn-primary" type="submit">Add user</button>
                     </form>
@@ -79,4 +93,23 @@
         </div>
     </div>
 </div>
+@endsection
+@section('javascript')
+    <script>
+        const image = document.getElementById('ttd');
+        const box = document.getElementById('ttd-preview');
+        const imgPreview = document.querySelector('.ttd-preview');
+
+        image.addEventListener('change', function(){
+            box.classList.toggle('d-none',false);
+            box.classList.toggle('mt-2',true);
+
+            const oFReader = new FileReader();
+            oFReader.readAsDataURL(image.files[0]);
+
+            oFReader.onload = function(oFREvent) {
+                imgPreview.src = oFREvent.target.result;
+            }
+        });
+    </script>
 @endsection

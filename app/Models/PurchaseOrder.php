@@ -26,4 +26,19 @@ class PurchaseOrder extends Model
     {
         return $this->belongsTo(StockType::class);
     }
+
+    public function created_by_user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function known_by_user()
+    {
+        return $this->belongsTo(User::class, 'known_by');
+    }
+
+    public function approved_by_user()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
 }
