@@ -167,7 +167,7 @@
                             @endif
                         </div>
                         <div style="visibility:{{ $purchaseOrder->known_by ? 'visible' : 'hidden' }};">{{ $purchaseOrder->known_by ? $purchaseOrder->known_by_user->name : 'null' }}</div>
-                        <div style="visibility:{{ $purchaseOrder->known_by ? 'visible' : 'hidden' }};" class="fs-5">{{ $purchaseOrder->known_by ? 'Trading' : 'null' }}</div>
+                        <div style="visibility:{{ $purchaseOrder->known_by ? 'visible' : 'hidden' }};" class="fs-5">{{ $purchaseOrder->known_by ? $purchaseOrder->known_by_user->role->name : 'null' }}</div>
                     </div>
                     <div style="width:30%;text-align:center;display:inline-block;margin-top:10px;float:right">
                         <div>Mengetahui</div>
@@ -177,7 +177,7 @@
                             @endif
                         </div>
                         <div style="visibility:{{ $purchaseOrder->approved_by ? 'visible' : 'hidden' }};">{{ $purchaseOrder->approved_by ? $purchaseOrder->approved_by_user->name : 'null' }}</div>
-                        <div style="visibility:{{ $purchaseOrder->approved_by ? 'visible' : 'hidden' }};" class="fs-5">{{ $purchaseOrder->approved_by ? 'Direktur' : 'null' }}</div>
+                        <div style="visibility:{{ $purchaseOrder->approved_by ? 'visible' : 'hidden' }};" class="fs-5">{{ $purchaseOrder->approved_by ? $purchaseOrder->approved_by_user->role->name : 'null' }}</div>
                     </div>
                 </td>
             </tr>

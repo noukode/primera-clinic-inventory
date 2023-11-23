@@ -70,6 +70,11 @@
                         <div class="col-auto">
                             Item Details
                         </div>
+                        @if (auth()->user()->role->code === "ADMIN" && $purchaseOrder->purchase_status < 2)
+                            <div class="col-auto">
+                                <a href="#" class="btn btn-success" id="approve"><i class="fas fa-check me-2"></i>Approve</a>
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <div class="card-body">
@@ -192,6 +197,35 @@
                                 Helper.simpleAlert('Error', 'Something went wrong', 'error');
                             },
                         })
+                    }
+                })
+            })
+
+            $('#approve').click(function(e){
+                e.preventDefault();
+                Helper.confirmAlert('Anda yakin ingin meng-approve PO ini?', 'question', 'Yes').then(res => {
+                    if(res.isConfirmed){
+                        loadPanel.show();
+                        let formdata = {};
+                        formdata._method = 'PUT';
+                        formdata.purchase_status = 2;
+                        $.ajax({
+                            url: `{!! route('purchase-order.index') !!}/${po_id}/approve`,
+                            dataType: "json",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: formdata,
+                            type: 'POST',
+                            success: function(result) {
+                                loadPanel.hide();
+                                Helper.simpleNotification(result.message, 'Berhasil approve PO!', result.status);
+                            },
+                            error: function() {
+                                loadPanel.hide();
+                                Helper.simpleAlert('Error', 'Something went wrong', 'error');
+                            },
+                        });
                     }
                 })
             })

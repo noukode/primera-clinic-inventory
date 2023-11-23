@@ -112,7 +112,9 @@
                                 <td>{{ $purchase->purchase_date }}</td>
                                 <td>
                                     <a class="btn btn-sm btn-info me-2" href="{{ route('purchase-order.show', $purchase->id) }}"><i data-feather="info"></i></a>
+                                    @if ($purchase->purchase_status < 2)
                                     <a class="btn btn-sm btn-success me-2" href="{{ route('purchase-order.edit', $purchase->id) }}"><i data-feather="edit"></i></a>
+                                    @endif
                                     {{-- <a class="btn btn-sm btn-danger btn-delete" data-id="{{ $purchase->id }}" href="#"><i data-feather="trash-2"></i></a> --}}
                                 </td>
                             </tr>

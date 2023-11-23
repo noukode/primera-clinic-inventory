@@ -147,6 +147,19 @@ class PurchaseOrderController extends Controller
         ]);
     }
 
+    public function approve(Request $request, PurchaseOrder $purchaseOrder)
+    {
+        $purchaseOrder->purchase_status = $request->purchase_status;
+        $purchaseOrder->approved_by = auth()->user()->id;
+        $purchaseOrder->save();
+
+        return response()->json([
+            'status' => 'success',
+            'error' => 0,
+            'message' => 'Success'
+        ]);
+    }
+
     /**
      * Remove the specified resource from storage.
      */

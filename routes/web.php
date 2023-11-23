@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\PurchaseOrderDetailController;
 use App\Http\Controllers\StockController;
@@ -35,6 +36,7 @@ Route::middleware('auth')->group(function(){
         return view('pages.dashboard.dashboard', compact('title'));
     });
     Route::resource('purchase-order', PurchaseOrderController::class)->except(['create']);
+    Route::put('purchase-order/{purchase_order}/approve', [PurchaseOrderController::class, 'approve'])->name('purchase-order.approve');
     Route::get('purchase-order/{purchase_order}/print', [PurchaseOrderController::class, 'print'])->name('purchase-order.print');
     Route::resource('stock', StockController::class);
     Route::resource('item', ItemController::class);
