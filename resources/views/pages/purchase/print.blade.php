@@ -27,6 +27,9 @@
         .fs-5{
             font-size: 0.8rem;
         }
+        .page-break{
+            page-break-after: always;
+        }
     </style>
 </head>
 <body>
@@ -35,7 +38,7 @@
             <tr>
                 <td width="20%" class="text-center"><img src="{{ Helper::imgToBase64(public_path('assets/img/a.webp')) }}" style="width:70px;display:inline-block;" alt=""></td>
                 <td width="60%" colspan="2" class="text-center"><h2>Purchase Order</h2></td>
-                <td width="20%">data</td>
+                <td width="20%"></td>
             </tr>
             <tr>
                 <td colspan="2" width="100%" style="border-right-style:hidden;padding:10px">
@@ -43,7 +46,7 @@
                         <tr>
                             <td class="p-1" width="20%">Office</td>
                             <td class="p-1" width="2%">:</td>
-                            <td class="p-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo, quod.</td>
+                            <td class="p-1">{{ $purchaseOrder->branch->detail }}</td>
                         </tr>
                         <tr>
                             <td class="p-1" width="20%">NPWP</td>
@@ -94,10 +97,12 @@
                             <th>AMOUNT</th>
                         </tr>
                         @php
+                            $page = 1;
+                            $i = 1;
                             $total = 0;
                         @endphp
                         @foreach ($purchaseOrder->details as $item)
-                            <tr>
+                            <tr class="{{ $loop->iteration % 20 == 0 ? 'page-break' : '' }}">
                                 <td class="p-1 text-center">{{ $loop->iteration }}</td>
                                 <td class="p-1">{{ $item->item->name }}</td>
                                 <td class="p-1 text-center">{{ $item->qty }}</td>
@@ -106,6 +111,7 @@
                                 <td class="p-1 text-right">Rp. {{ number_format($item->qty * $item->price, 0, ',', '.') }}</td>
                             </tr>
                             @php
+                                $i++;
                                 $total += $item->qty * $item->price;
                             @endphp
                         @endforeach
@@ -137,7 +143,7 @@
                         <tr>
                             <td width="5%"></td>
                             <td>
-                                Delivery Point : <br>Primera Clinica
+                                Delivery Point : <br>{{ $purchaseOrder->branch->name }}
                             </td>
                         </tr>
                     </table>
@@ -150,24 +156,28 @@
                         <div style="height: 80px">
                             <img src="{{ Helper::imgToBase64('storage/'.$purchaseOrder->created_by_user->ttd) }}" style="width:100%;display:inline-block;max-height:80px" alt="">
                         </div>
-                        <div>{{ $purchaseOrder->created_by_user->name }}</div>
-                        <div class="fs-5">Trading</div>
+                        <div style="visibility:{{ $purchaseOrder->created_by ? 'visible' : 'hidden' }};">{{ $purchaseOrder->created_by ? $purchaseOrder->created_by_user->name : 'null' }}</div>
+                        <div style="visibility:{{ $purchaseOrder->created_by ? 'visible' : 'hidden' }};" class="fs-5">{{ $purchaseOrder->created_by ? $purchaseOrder->created_by_user->role->name : 'null' }}</div>
                     </div>
                     <div style="width:30%;text-align:center;display:inline-block;margin-top:50px;">
                         <div>Diperiksa oleh</div>
                         <div style="height: 80px">
-                            <img src="#" alt="">
+                            @if ($purchaseOrder->known_by)
+                            <img src="{{ Helper::imgToBase64('storage/'.$purchaseOrder->known_by_user->ttd) }}" style="width:100%;display:inline-block;max-height:80px" alt="">
+                            @endif
                         </div>
-                        <div>Jessica</div>
-                        <div class="fs-5">Trading</div>
+                        <div style="visibility:{{ $purchaseOrder->known_by ? 'visible' : 'hidden' }};">{{ $purchaseOrder->known_by ? $purchaseOrder->known_by_user->name : 'null' }}</div>
+                        <div style="visibility:{{ $purchaseOrder->known_by ? 'visible' : 'hidden' }};" class="fs-5">{{ $purchaseOrder->known_by ? 'Trading' : 'null' }}</div>
                     </div>
                     <div style="width:30%;text-align:center;display:inline-block;margin-top:10px;float:right">
                         <div>Mengetahui</div>
                         <div style="height: 80px">
-                            <img src="#" alt="">
+                            @if ($purchaseOrder->approved_by)
+                            <img src="{{ Helper::imgToBase64('storage/'.$purchaseOrder->approved_by_user->ttd) }}" style="width:100%;display:inline-block;max-height:80px" alt="">
+                            @endif
                         </div>
-                        <div>Azhar</div>
-                        <div class="fs-5">Direktur</div>
+                        <div style="visibility:{{ $purchaseOrder->approved_by ? 'visible' : 'hidden' }};">{{ $purchaseOrder->approved_by ? $purchaseOrder->approved_by_user->name : 'null' }}</div>
+                        <div style="visibility:{{ $purchaseOrder->approved_by ? 'visible' : 'hidden' }};" class="fs-5">{{ $purchaseOrder->approved_by ? 'Direktur' : 'null' }}</div>
                     </div>
                 </td>
             </tr>

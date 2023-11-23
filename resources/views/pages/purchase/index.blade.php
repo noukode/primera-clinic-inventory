@@ -52,7 +52,16 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-lg-5 mb-2">
+                    <div class="col-lg-2 mb-2">
+                        <label for="purchase_status">Status</label>
+                        <select name="purchase_status" id="purchase_status" class="form-control">
+                            <option value="" {{ request('purchase_status') === null && request('purchase_status') !== 0 ? 'selected' : '' }}></option>
+                            @foreach (config('config.purchase_order.status') as $key => $value)
+                            <option {{ request('purchase_status') == $key && request('purchase_status') !== null ? 'selected' : '' }} value="{{ $key }}">{{ ucfirst($value) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-lg-3 mb-2">
                         <label for="search">Cari</label>
                         <input type="text" name="search" class="form-control" id="search" value="{{ request('search') }}">
                     </div>

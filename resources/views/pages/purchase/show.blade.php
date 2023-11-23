@@ -30,9 +30,11 @@
                         <div class="col-auto">
                             Purchase Order Details
                         </div>
-                        <div class="col-auto">
-                            <a href="{{ route('purchase-order.print', $purchaseOrder->id) }}" class="btn btn-primary"><i class="fas fa-print me-2"></i> Cetak</a>
-                        </div>
+                        @if ($purchaseOrder->purchase_status > 0)
+                            <div class="col-auto">
+                                <a href="{{ route('purchase-order.print', $purchaseOrder->id) }}" class="btn btn-primary"><i class="fas fa-print me-2"></i> Cetak</a>
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <div class="card-body">

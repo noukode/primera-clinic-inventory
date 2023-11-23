@@ -81,7 +81,8 @@
                     <div class="row justify-content-end">
                         <div class="col-auto">
                             <form action="#" id="create-po">
-                                <button class="btn btn-info" type="submit">Simpan</button>
+                                <button class="btn btn-info" id="draft" type="button">Save as Draft</button>
+                                <button class="btn btn-primary" id="submit" type="submit">Submit</button>
                             </form>
                         </div>
                     </div>
@@ -277,9 +278,21 @@
 
             $('#create-po').submit(function(e){
                 e.preventDefault();
+                submit(1);
+            });
+
+            $('#draft').click(function(e){
+                e.preventDefault();
+                submit(0);
+            });
+
+            function submit(status){
                 let formdata = FormData();
                 formdata.purchase_no = $('#po_no').val();
-                formdata.items = items;
+                formdata.project_name = $('#project_name').val();
+                formdata.branch_id = $('#branch_id').val();
+                formdata.stock_type_id = $('#stock_type_id').val();
+                formdata.purchase_status = status;
                 $.ajax({
                     url: "{{ route('purchase-order.store') }}",
                     dataType: "json",
@@ -297,7 +310,7 @@
                         alert('Gagal');
                     },
                 });
-            });
+            }
 
 
         });

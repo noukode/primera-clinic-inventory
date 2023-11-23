@@ -34,7 +34,7 @@ Route::middleware('auth')->group(function(){
         $title = 'Dashboard';
         return view('pages.dashboard.dashboard', compact('title'));
     });
-    Route::resource('purchase-order', PurchaseOrderController::class);
+    Route::resource('purchase-order', PurchaseOrderController::class)->except(['create']);
     Route::get('purchase-order/{purchase_order}/print', [PurchaseOrderController::class, 'print'])->name('purchase-order.print');
     Route::resource('stock', StockController::class);
     Route::resource('item', ItemController::class);

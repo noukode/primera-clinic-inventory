@@ -32,6 +32,10 @@ class PurchaseOrderController extends Controller
             $purchases = $purchases->where('stock_type_id', request('stock_type_id'));
         }
 
+        if(request('purchase_status') !== null){
+            $purchases = $purchases->where('purchase_status', request('purchase_status'));
+        }
+
         if(request('search')){
             $purchases = $purchases->where('purchase_no', 'LIKE', '%'. request('search') .'%')->orWhere('project_name', 'LIKE', '%'. request('search') .'%');
         }
@@ -68,8 +72,9 @@ class PurchaseOrderController extends Controller
             'branch_id' => $request->branch_id,
             'stock_type_id' => $request->stock_type_id,
             'purchase_date' => Carbon::now(),
-            'purchase_status' => 0,
-            'created_by' => auth()->user()->id
+            'purchase_status' => $request->purchase_status,
+            'created_by' => auth()->user()->id,
+            'known_by' => $request->purchase_status == 1 ? auth()->user()->id : null
         ]);
 
         // $items = [];
@@ -127,6 +132,12 @@ class PurchaseOrderController extends Controller
         $purchaseOrder->project_name = $request->project_name;
         $purchaseOrder->branch_id = $request->branch_id;
         $purchaseOrder->stock_type_id = $request->stock_type_id;
+        $purchaseOrder->purchase_status = $request->purchase_status;
+        if($request->purchase_status == 1){
+            $purchaseOrder->known_by = auth()->user()->id;
+        }else{
+            $purchaseOrder->created_by = auth()->user()->id;
+        }
         $purchaseOrder->save();
 
         return response()->json([
@@ -159,6 +170,6 @@ class PurchaseOrderController extends Controller
         // return $pdf->download($purchaseOrder->purchase_no . '.pdf');
         return $pdf->stream();
 
-        // return view('pages.purchase.print', compact('purchaseOrder'));
+        // return view('pages.purchase.print', compact('purchaseOrder', 'disc'));
     }
 }
