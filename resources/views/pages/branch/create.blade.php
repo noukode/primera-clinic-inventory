@@ -7,14 +7,14 @@
                 <div class="col-auto mt-4">
                     <h1 class="page-header-title">
                         <div class="page-header-icon"><i data-feather="package"></i></div>
-                        Create Location
+                        Create Branch
                     </h1>
                 </div>
             </div>
             <nav class="mt-4 rounded" aria-label="breadcrumb">
                 <ol class="breadcrumb px-3 py-2 rounded mb-0">
                     <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="/location">Location</a></li>
+                    <li class="breadcrumb-item"><a href="/branch">Branch</a></li>
                     <li class="breadcrumb-item active">Create</li>
                 </ol>
             </nav>
@@ -27,13 +27,13 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('location.store') }}" method="POST">
+                    <form action="{{ route('branch.store') }}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="col-12">
                                 <div class="mb-3">
-                                    <label for="name" class="form-label">Location Name</label>
-                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="Location Name">
+                                    <label for="name" class="form-label">Branch Name</label>
+                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="Branch Name">
                                     <div class="invalid-feedback">
                                         @error('name')
                                             {{ $message }}
@@ -43,15 +43,10 @@
                             </div>
                             <div class="col-12">
                                 <div class="mb-3">
-                                    <label for="branch_id" class="form-label">Branch</label>
-                                    <select class="form-select  @error('branch_id') is-invalid @enderror" aria-label="Branch" id="branch_id" name="branch_id">
-                                        <option disabled selected>Open this select menu</option>
-                                        @foreach ($branches as $branch)
-                                            <option value="{{ $branch->id }}">{{ $branch->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <label for="detail" class="form-label">Detail</label>
+                                    <textarea name="detail" id="detail" class="form-control @error('detail') is-invalid @enderror" cols="30" rows="10"></textarea>
                                     <div class="invalid-feedback">
-                                        @error('branch_id')
+                                        @error('detail')
                                             {{ $message }}
                                         @enderror
                                     </div>

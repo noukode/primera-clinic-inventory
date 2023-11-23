@@ -45,6 +45,10 @@
                         <div class="nav-link-icon"><i data-feather="folder"></i></div>
                         Location
                     </a>
+                    <a class="nav-link" href="/branch">
+                        <div class="nav-link-icon"><i data-feather="folder"></i></div>
+                        Branch
+                    </a>
                     <!-- Sidenav Heading (User Management)-->
                     <div class="sidenav-menu-heading">User Management</div>
                     <a class="nav-link" href="/user">

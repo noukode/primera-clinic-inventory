@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LocationController;
@@ -46,6 +47,7 @@ Route::middleware('auth')->group(function(){
     Route::resource('category', CategoryController::class)->except('show');
     Route::resource('unit', UnitController::class)->except('show');
     Route::resource('location', LocationController::class)->except('show');
+    Route::resource('branch', BranchController::class);
     Route::resource('user', UserController::class);
     Route::post('purchase-order/store', [PurchaseOrderDetailController::class, 'store'])->name('purchase-order-detail.store');
     Route::post('purchase-order/delete', [PurchaseOrderDetailController::class, 'delete'])->name('purchase-order-detail.delete');
