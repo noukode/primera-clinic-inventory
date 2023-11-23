@@ -41,6 +41,10 @@
                         <div class="nav-link-icon"><i data-feather="folder"></i></div>
                         Unit
                     </a>
+                    <a class="nav-link" href="/location">
+                        <div class="nav-link-icon"><i data-feather="folder"></i></div>
+                        Location
+                    </a>
                     <!-- Sidenav Heading (User Management)-->
                     <div class="sidenav-menu-heading">User Management</div>
                     <a class="nav-link" href="/user">

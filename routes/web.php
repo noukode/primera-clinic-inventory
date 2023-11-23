@@ -9,6 +9,7 @@ use App\Http\Controllers\PurchaseOrderDetailController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
+use App\Models\Location;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,6 +45,7 @@ Route::middleware('auth')->group(function(){
     Route::post('item/all', [ItemController::class, 'all'])->name('item.all');
     Route::resource('category', CategoryController::class)->except('show');
     Route::resource('unit', UnitController::class)->except('show');
+    Route::resource('location', LocationController::class)->except('show');
     Route::resource('user', UserController::class);
     Route::post('purchase-order/store', [PurchaseOrderDetailController::class, 'store'])->name('purchase-order-detail.store');
     Route::post('purchase-order/delete', [PurchaseOrderDetailController::class, 'delete'])->name('purchase-order-detail.delete');
